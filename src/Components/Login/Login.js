@@ -1,11 +1,13 @@
 import React, { Component } from "react";
+import { axiosPost } from "../../Utils/AxiosApi";
+import { URL } from "../../Utils/Constant";
 class Login extends Component {
   state = {
     email: "",
-    password: ""
+    password: "",
   };
 
-  handleChnage = e => {
+  handleChnage = (e) => {
     var target = e.target;
     var name = target.name;
     var value = target.value;
@@ -13,7 +15,28 @@ class Login extends Component {
   };
 
   handleLogin = () => {
-    console.log([this.state.email, this.state.password]);
+    let data = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+
+    axiosPost(
+      URL.login,
+      data,
+      (response) => {
+        if (response.data.success) {
+          localStorage.setItem("token", response.data.data.token);
+          localStorage.setItem(
+            "permissions",
+            JSON.stringify(response.data.data.permissions)
+          );
+          localStorage.setItem("role", response.data.data.roles);
+        }
+      },
+      (err) => {
+        debugger;
+      }
+    );
   };
 
   render() {
