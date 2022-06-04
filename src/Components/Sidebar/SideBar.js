@@ -16,6 +16,16 @@ class SideBar extends Component {
     modules: this.props.modules,
   };
 
+
+  componentDidMount(){
+    this.getModules();
+  }
+
+  getModules=()=>{
+    let permissions =localStorage.getItem('permissions');
+    debugger;
+  }
+
   render() {
     return (
       <div className="sidebar">

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
+import { history } from "../../Utils/History";
 class Login extends Component {
   state = {
     email: "",

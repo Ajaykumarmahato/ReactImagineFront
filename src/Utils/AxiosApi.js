@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { headers, URL } from "./Constant";
 
 export const axiosPost = (url, params, successCallback, failureCallBack) => {
-  if (url == URL.login) {
+  if (url == URL.login||url==URL.registerUser) {
     axios
       .post(url, params)
       .then(successCallback || function (response) {})
