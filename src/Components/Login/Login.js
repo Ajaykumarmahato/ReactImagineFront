@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 class Login extends Component {
@@ -77,6 +78,9 @@ class Login extends Component {
                     </button>
                   </div>
                 </div>
+                  <div className="card-footer d-flex justify-content-center">
+                    <Link to="/signup">Register Here!</Link>
+                  </div>
               </div>
             </div>
           </div>

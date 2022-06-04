@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SideBar from "./Components/Sidebar/SideBar";
 import Home from "./Components/Home/Home";
 import Category from "./Components/Category/Category";
+import Signup from "./Components/Signup/Signup";
 class App extends Component {
   state = {};
   render() {
@@ -29,6 +30,14 @@ class App extends Component {
               element={
                 <>
                   <SideBar /> <Category />
+                </>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <>
+                   <Signup />
                 </>
               }
             />
