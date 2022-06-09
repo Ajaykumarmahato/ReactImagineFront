@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ProSidebar,
   Menu,
@@ -10,26 +10,24 @@ import {
 } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
 
-class SideBar extends Component {
-  state = {
-    sidebarOpen: false,
-    modules: this.props.modules,
-  };
+function SideBar(props) {
+
+  const [sideBarOpen,setSideBarOpen]=useState(false);
+  const [modules,setModules]=useState(props.modules);
 
 
-  componentDidMount(){
+  function useEffect(){
     this.getModules();
   }
 
-  getModules=()=>{
+  function getModule(){
     let permissions =localStorage.getItem('permissions');
     debugger;
   }
 
-  render() {
     return (
       <div className="sidebar">
-        <ProSidebar collapsed={this.state.sidebarOpen}>
+        <ProSidebar collapsed={sideBarOpen}>
           <SidebarHeader>System</SidebarHeader>
           <SidebarContent>
             <Menu iconShape="square">
@@ -50,6 +48,5 @@ class SideBar extends Component {
         </ProSidebar>
       </div>
     );
-  }
 }
 export default SideBar;

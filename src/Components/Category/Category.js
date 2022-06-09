@@ -3,6 +3,7 @@ import WindowModal from "../WindowModal/WindowModal";
 import CategoryDetail from "./CategoryDetail";
 import CategoryForm from "./CategoryForm";
 import Swal from "sweetalert2";
+import SideBar from "../Sidebar/SideBar";
 class Category extends Component {
   state = {
     addCategoryModalOpen: false,
@@ -50,6 +51,7 @@ class Category extends Component {
   render() {
     return (
       <>
+      <SideBar/>
         <div className="landing">
           <button
             className="btn btn-primary m-4"

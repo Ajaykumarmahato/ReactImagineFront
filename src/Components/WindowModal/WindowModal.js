@@ -1,19 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
-class WindowModal extends Component {
-  render() {
+function WindowModal(props) {
     return (
-      <Modal isOpen={this.props.openModal} toggle={this.props.toggleModal}>
-        <ModalHeader toggle={this.props.toggleModal}>
-          {this.props.titleModal}
+      <Modal isOpen={props.openModal} toggle={props.toggleModal}>
+        <ModalHeader toggle={props.toggleModal}>
+          {props.titleModal}
         </ModalHeader>
-        <ModalBody>{this.props.bodyModal}</ModalBody>
-        {this.props.footerModal!=null?(
-            <ModalFooter>{this.props.footerModal}</ModalFooter>
+        <ModalBody>{props.bodyModal}</ModalBody>
+        {props.footerModal!=null?(
+            <ModalFooter>{props.footerModal}</ModalFooter>
         ):null}
       </Modal>
     );
-  }
 }
 export default WindowModal;

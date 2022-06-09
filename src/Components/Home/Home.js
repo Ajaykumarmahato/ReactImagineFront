@@ -1,9 +1,11 @@
-import React, {Component} from "react";
-class Home extends Component{
-    render(){
-        return(<div className="landing d-flex justify-content-center">
+import React from "react";
+import SideBar from "../Sidebar/SideBar";
+function Home(){
+        return(
+            <>
+        <SideBar />
+        <div className="landing d-flex justify-content-center">
             <h1>Welcome To The Sysytem.</h1>
-        </div>);
-    }
+        </div></>);
 }
 export default Home;

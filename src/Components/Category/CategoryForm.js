@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Button,
   Col,
@@ -9,10 +9,8 @@ import {
   Label,
 } from "reactstrap";
 
-class CategoryForm extends Component {
-  state = {};
+function CategoryForm() {
 
-  render() {
     return (
       <Form>
         <FormGroup row>
@@ -51,6 +49,5 @@ class CategoryForm extends Component {
         </FormGroup>
       </Form>
     );
-  }
 }
 export default CategoryForm;

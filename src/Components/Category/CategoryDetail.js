@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 
-class CategoryDetail extends Component {
-  state = {};
-  render() {
+function CategoryDetail(props) {
+ 
     return (
       <>
-        <p>{this.props.category.description}</p>
+        <p>{props.category.description}</p>
       </>
     );
-  }
 }
 export default CategoryDetail;

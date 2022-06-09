@@ -1,11 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 import MyRoute from "./Utils/MyRoute";
-class App extends Component {
-  state = {};
-  render() {
+function App() {
     return (
       <MyRoute></MyRoute>
     );
-  }
 }
 export default App;

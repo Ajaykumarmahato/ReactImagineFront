@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React, { useState } from "react";
 import {
   Button,
   Col,
@@ -13,61 +13,49 @@ import Swal from "sweetalert2";
 import { axiosPost } from "../../Utils/AxiosApi";
 import { headers, URL } from "../../Utils/Constant";
 
-export default class signup extends Component{
-    state={
-        name:"",
-        email:"",
-        contactNumber:"",
-        password:"",
-        file:"",
-        error:false
-    }
+function Signup(){
+  
+    const [name,setName]=useState('');
+    const [email,setEmail]=useState('');
+    const [contactNumber,setContactNumber]=useState('');
+    const [password,setPassword]=useState('');
+    const [file,setFile]=useState('');
+    const [error,setError]=useState(false);
 
-    handelChange=(e)=>{
-        var target=e.target;
-        var name=target.name;
-        var value=target.value;
-        this.setState({[name]:value})
-    }
 
-    handleFileChnage=(e)=>{
-        var target = e.target;
-        var name=target.name;
-        this.setState({[name]:target.files[0]})
-    }
+    // handleFileChnage=(e)=>{
+    //     var target = e.target;
+    //     var name=target.name;
+    //     this.setState({[name]:target.files[0]})
+    // }
 
-    hnadleSignup=(e)=>{
+    function handleSignup(e){
         e.preventDefault();
 
         let formData=new FormData();
         let user={
-            name:this.state.name,
-            email:this.state.email,
-            contactNumber:this.state.contactNumber,
-            password:this.state.password
+            name:name,
+            email:email,
+            contactNumber:contactNumber,
+            password:password
         }
         if(user.name==""||user.email==""||user.password==""){
-                this.setState({
-                    error:true
-                    })
+                setError(true);
         swal("Error","Fill All the fields","error");
         return;
         }
         formData.append('user',JSON.stringify(user));
-        if(this.state.file!=""){
-            formData.append('file',this.state.file);
+        if(file!=""){
+            formData.append('file',file);
         }
 
         axiosPost(URL.registerUser,formData,(response)=>{
            
             if(response.data.success){
-                this.setState({
-                    name:"",
-                    email:"",
-                    contactNumber:"",
-                    password:"",
-                    file:""
-                }) 
+                setEmail('');
+                setContactNumber('');
+                setPassword('');
+                setFile('');
                 swal("Success",response.data.message,"success");   
             }
         },(err)=>{
@@ -75,7 +63,6 @@ export default class signup extends Component{
         });
     }
 
-    render(){
         return(
             <div className="landing w-100">
         <div className="container">
@@ -93,8 +80,8 @@ export default class signup extends Component{
               name="name"
               id="exampleEmail"
               placeholder="Name"
-              onChange={this.handelChange}
-              value={this.state.name}
+              onChange={(e)=>setName(e.target.value)}
+              value={name}
             />
           </Col>
         </FormGroup>
@@ -108,8 +95,8 @@ export default class signup extends Component{
               name="email"
               id="example"
               placeholder="Email Address"
-               onChange={this.handelChange}
-               value={this.state.email}
+               onChange={(e)=>setEmail(e.target.value)}
+               value={email}
             />
           </Col>
         </FormGroup>
@@ -123,8 +110,8 @@ export default class signup extends Component{
               name="contactNumber"
               id="exampleContact"
               placeholder="Contact Number"
-               onChange={this.handelChange}
-               value={this.state.contactNumber}
+               onChange={(e)=>setContactNumber(e.target.value)}
+               value={contactNumber}
             />
           </Col>
         </FormGroup>
@@ -135,7 +122,7 @@ export default class signup extends Component{
             Image
           </Label>
           <Col sm={10}>
-            <Input type="file" name="file"  id="exampleFile"  onChange={this.handleFileChnage} />
+            <Input type="file" name="file"  id="exampleFile"  onChange={(e)=>setPassword(e.target.files[0])} />
           </Col>
         </FormGroup>
        
@@ -148,14 +135,14 @@ export default class signup extends Component{
               type="password"
               name="password"
               id="examplePassword"
-               onChange={this.handelChange}
-               value={this.state.password}
+               onChange={(e)=>setPassword(e.target.value)}
+               value={password}
             />
           </Col>
         </FormGroup>
          <FormGroup>
           <Col className="d-flex justify-content-end">
-            <Button onClick={this.hnadleSignup}>Submit</Button>
+            <Button onClick={(e)=>handleSignup(e)}>Submit</Button>
           </Col>
         </FormGroup>
       </Form>
@@ -164,5 +151,6 @@ export default class signup extends Component{
       </div>
       </div>
         )
-    }
 }
+
+export default Signup;

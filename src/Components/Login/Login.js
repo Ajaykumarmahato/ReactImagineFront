@@ -1,25 +1,21 @@
-import React, { Component } from "react";
+import React, {useState } from "react";
 import { Link } from "react-router-dom";
+import swal from "sweetalert";
 import { axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
-import { history } from "../../Utils/History";
-class Login extends Component {
-  state = {
-    email: "",
-    password: "",
-  };
+import {useNavigate} from 'react-router-dom';
 
-  handleChnage = (e) => {
-    var target = e.target;
-    var name = target.name;
-    var value = target.value;
-    this.setState({ [name]: value });
-  };
+function Login() {
+ 
+  const [email,setEmail]=useState('');
+  const [password,setPassword]=useState('');
+  
+  let navigate = useNavigate();
 
-  handleLogin = () => {
+  function handleLogin(){
     let data = {
-      email: this.state.email,
-      password: this.state.password,
+      email: email,
+      password: password,
     };
 
     axiosPost(
@@ -31,8 +27,10 @@ class Login extends Component {
           localStorage.setItem(
             "permissions",
             JSON.stringify(response.data.data.permissions)
-          );
-          localStorage.setItem("role", response.data.data.roles);
+            );
+            localStorage.setItem("role", response.data.data.roles);
+            localStorage.setItem("isLoggedIn", true);
+            navigate('/dashboard');
         }
       },
       (err) => {
@@ -41,7 +39,6 @@ class Login extends Component {
     );
   };
 
-  render() {
     return (
       <div className="landing w-100">
         <div className="container">
@@ -57,7 +54,8 @@ class Login extends Component {
                       className="form-control"
                       placeholder="email address"
                       name="email"
-                      onChange={this.handleChnage}
+                      value={email}
+                      onChange={(e)=>setEmail(e.target.value)}
                     ></input>
                   </div>
                   <div className="form-group">
@@ -67,13 +65,14 @@ class Login extends Component {
                       className="form-control"
                       placeholder="password"
                       name="password"
-                      onChange={this.handleChnage}
+                      value={password}
+                      onChange={(e)=>setPassword(e.target.value)}
                     ></input>
                   </div>
                   <div className="form-group mt-2">
                     <button
                       className="btn btn-success form-control"
-                      onClick={this.handleLogin}
+                      onClick={handleLogin}
                     >
                       Login
                     </button>
@@ -88,6 +87,5 @@ class Login extends Component {
         </div>
       </div>
     );
-  }
 }
 export default Login;
