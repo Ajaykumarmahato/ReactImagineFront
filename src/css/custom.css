@@ -10,3 +10,49 @@
 }
 
 
+
+
+.spinner {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loader-spinner {
+  width: 150px;
+  height: 150px;
+}
+  .loader-spinner svg {
+    width: 90%;
+    fill: none;
+   } 
+
+.load {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 0.7 0.3;
+  stroke-linecap: round;
+  stroke-width: 3px;
+  stroke:  rgb(0, 92, 132);
+}
+  .one {
+    animation: load 1.5s infinite ease-in;
+    animation-direction: reverse;
+  }
+  .two {
+    fill:  rgb(0, 92, 132);
+  }
+  .three {
+    animation: load 1.5s infinite;
+  }
+
+
+@keyframes load {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
