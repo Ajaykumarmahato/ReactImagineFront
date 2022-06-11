@@ -3,6 +3,10 @@ export const serverLocation = "http://127.0.0.1:8000/api";
 export const URL = {
     registerUser:`${serverLocation}/free/register-user`,
     login:`${serverLocation}/free/login`,
+
+
+    // modules
+    modules:`${serverLocation}/auth/modules`,
 };
 
 

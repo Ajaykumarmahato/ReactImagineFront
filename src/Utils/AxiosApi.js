@@ -15,3 +15,10 @@ export const axiosPost = (url, params, successCallback, failureCallBack) => {
       .catch(failureCallBack || function (response) {});
   }
 };
+
+export const axiosGet = (url, successCallback, failureCallBack) => {
+  axios
+    .get(url, { headers })
+     .then(successCallback || function (response) {})
+      .catch(failureCallBack || function (response) {});
+};
