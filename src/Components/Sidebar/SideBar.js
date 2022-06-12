@@ -12,17 +12,17 @@ import { Link } from "react-router-dom";
 import { axiosGet } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 
-function SideBar(props) {
+function SideBar() {
 
   const [sideBarOpen,setSideBarOpen]=useState(false);
-  const [modules,setModules]=useState(props.modules);
+  const [modules,setModules]=useState([]);
 
 
    useEffect=()=>{
     getModules();
   }
 
-  function getModules(){
+  const getModules=()=>{
     axiosGet(URL.modules,(response)=>{
       if(response.data.success){
         setModules(response.data.data.items)
@@ -38,19 +38,24 @@ function SideBar(props) {
           <SidebarHeader>System</SidebarHeader>
           <SidebarContent>
             <Menu iconShape="square">
-
-              <SubMenu title="category">
-                <MenuItem>
-                  List Categories <Link to="/category" />
-                </MenuItem>
-              </SubMenu>
-            </Menu>
-            {/* <Menu iconShape="square">
-              <SubMenu title="user">
-                <MenuItem>Admin</MenuItem>
-                <MenuItem>Customer</MenuItem>
-              </SubMenu>
-            </Menu> */}
+              {modules.length>0?(
+              modules.map((module, idx)=>{
+                return(
+                  module.sub_modules.length>0?(
+                    <SubMenu title={module.name}>
+                    {module.sub_modules.map((subModule,id)=>{
+                      return(
+                        <MenuItem><Link to={subModule.ui_url}>{subModule.name}</Link></MenuItem>
+                      )
+                    })}
+                    </SubMenu>
+                  ):(
+                    <MenuItem><Link to={module.ui_url}>{module.name}</Link></MenuItem>
+                  )
+                )
+              })
+              ):null}
+            </Menu>  
           </SidebarContent>
           <SidebarFooter>Logout</SidebarFooter>
         </ProSidebar>
