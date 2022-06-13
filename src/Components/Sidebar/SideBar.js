@@ -22,6 +22,10 @@ function SideBar() {
     getModules();
   }
 
+  const toggleSidebar=()=>{
+    setSideBarOpen(!sideBarOpen);
+  }
+
   const getModules=()=>{
     axiosGet(URL.modules,(response)=>{
       if(response.data.success){
@@ -35,7 +39,9 @@ function SideBar() {
     return (
       <div className="sidebar">
         <ProSidebar collapsed={sideBarOpen}>
-          <SidebarHeader>System</SidebarHeader>
+        <SidebarHeader onClick={toggleSidebar}>
+        System
+      </SidebarHeader>
           <SidebarContent>
             <Menu iconShape="square">
               {modules.length>0?(
@@ -45,12 +51,12 @@ function SideBar() {
                     <SubMenu title={module.name}>
                     {module.sub_modules.map((subModule,id)=>{
                       return(
-                        <MenuItem><Link to={subModule.ui_url}>{subModule.name}</Link></MenuItem>
+                        <MenuItem>{subModule.name}<Link to={subModule.ui_url}/></MenuItem>
                       )
                     })}
                     </SubMenu>
                   ):(
-                    <MenuItem><Link to={module.ui_url}>{module.name}</Link></MenuItem>
+                    <MenuItem>{module.name}<Link to={module.ui_url}/></MenuItem>
                   )
                 )
               })

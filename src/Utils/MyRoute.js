@@ -1,8 +1,7 @@
 import React from 'react';
-import { Routes, Route , Navigate } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 
 import Login from "../Components/Login/Login";
-import SideBar from "../Components/Sidebar/SideBar";
 import Home from "../Components/Home/Home";
 import Category from "../Components/Category/Category";
 import Signup from "../Components/Signup/Signup";
