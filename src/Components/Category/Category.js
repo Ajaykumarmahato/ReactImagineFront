@@ -51,7 +51,6 @@ class Category extends Component {
   render() {
     return (
       <>
-      <SideBar/>
         <div className="landing">
           <button
             className="btn btn-primary m-4"

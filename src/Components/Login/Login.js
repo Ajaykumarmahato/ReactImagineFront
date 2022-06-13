@@ -34,7 +34,7 @@ function Login() {
             localStorage.setItem("role", response.data.data.roles);
             localStorage.setItem("isLoggedIn", true);
             setSpinner(false);
-            navigate('/dashboard',{ replace: true });
+            navigate('/dashboard');
         }
       },
       (err) => {
