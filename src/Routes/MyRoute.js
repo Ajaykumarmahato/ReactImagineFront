@@ -5,7 +5,7 @@ import Login from "../Components/Login/Login";
 import Home from "../Components/Home/Home";
 import Category from "../Components/Category/Category";
 import Signup from "../Components/Signup/Signup";
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from '../Routes/PrivateRoute';
 function MyRoute(){
    
         return (

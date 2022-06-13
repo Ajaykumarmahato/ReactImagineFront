@@ -1,5 +1,5 @@
 import React from "react";
-import MyRoute from "./Utils/MyRoute";
+import MyRoute from "../src/Routes/MyRoute";
 function App() {
     return (
       <MyRoute></MyRoute>
