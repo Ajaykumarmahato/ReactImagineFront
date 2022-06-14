@@ -49,11 +49,11 @@ function SideBar() {
               modules.map((module, idx)=>{
                 return(
                   module.sub_modules.length>0?(
-                    checkPermission('view',module.name)?(
+                    checkPermission('show-module',module.name)?(
                       <SubMenu title={module.name}>
                         {module.sub_modules.map((subModule,id)=>{
                           return(
-                            checkPermission('view',subModule.name)?(
+                            checkPermission('show-module',subModule.name)?(
                               <MenuItem>{subModule.name}<Link to={subModule.ui_url}/></MenuItem>
                             ):null
                           )
@@ -62,7 +62,7 @@ function SideBar() {
                     ):null
                     
                   ):(
-                    checkPermission('view',module.name)?(
+                    checkPermission('show-module',module.name)?(
                       <MenuItem>{module.name}<Link to={module.ui_url}/></MenuItem>
                     ):null
                   
