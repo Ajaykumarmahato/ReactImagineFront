@@ -1,7 +1,7 @@
+import React from "react";
 
 
-
-export const checkPermission=(permissionName,Module)=>{
+function checkPermission(permissionName,Module){
     let permissions=localStorage.getItem('permissions');
     if(permissions.includes(permissionName+'|'+Module)){
         return true;
@@ -9,3 +9,5 @@ export const checkPermission=(permissionName,Module)=>{
         return false;
     }
 }
+
+export default checkPermission;

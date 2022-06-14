@@ -11,6 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import { axiosGet } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
+import checkPermission from "../../Utils/PermissionChecker";
 
 function SideBar() {
 
@@ -48,15 +49,23 @@ function SideBar() {
               modules.map((module, idx)=>{
                 return(
                   module.sub_modules.length>0?(
-                    <SubMenu title={module.name}>
-                    {module.sub_modules.map((subModule,id)=>{
-                      return(
-                        <MenuItem>{subModule.name}<Link to={subModule.ui_url}/></MenuItem>
-                      )
-                    })}
-                    </SubMenu>
+                    checkPermission('view',module.name)?(
+                      <SubMenu title={module.name}>
+                        {module.sub_modules.map((subModule,id)=>{
+                          return(
+                            checkPermission('view',subModule.name)?(
+                              <MenuItem>{subModule.name}<Link to={subModule.ui_url}/></MenuItem>
+                            ):null
+                          )
+                        })}
+                      </SubMenu>
+                    ):null
+                    
                   ):(
-                    <MenuItem>{module.name}<Link to={module.ui_url}/></MenuItem>
+                    checkPermission('view',module.name)?(
+                      <MenuItem>{module.name}<Link to={module.ui_url}/></MenuItem>
+                    ):null
+                  
                   )
                 )
               })
