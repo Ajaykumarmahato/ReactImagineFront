@@ -19,9 +19,9 @@ function SideBar() {
   const [modules,setModules]=useState([]);
 
 
-   useEffect=()=>{
+   useEffect(()=>{
     getModules();
-  }
+  },[])
 
   const toggleSidebar=()=>{
     setSideBarOpen(!sideBarOpen);
@@ -49,11 +49,11 @@ function SideBar() {
               modules.map((module, idx)=>{
                 return(
                   module.sub_modules.length>0?(
-                    checkPermission('show-module',module.name)?(
+                    checkPermission('view',module.name)?(
                       <SubMenu title={module.name}>
                         {module.sub_modules.map((subModule,id)=>{
                           return(
-                            checkPermission('show-module',subModule.name)?(
+                            checkPermission('view',subModule.name)?(
                               <MenuItem>{subModule.name}<Link to={subModule.ui_url}/></MenuItem>
                             ):null
                           )
@@ -62,7 +62,7 @@ function SideBar() {
                     ):null
                     
                   ):(
-                    checkPermission('show-module',module.name)?(
+                    checkPermission('view',module.name)?(
                       <MenuItem>{module.name}<Link to={module.ui_url}/></MenuItem>
                     ):null
                   
