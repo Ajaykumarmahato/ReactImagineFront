@@ -9,11 +9,11 @@ import React from "react";
 //         return false;
 //     }
 // }
-
+const modulesPermissions =
+  JSON.parse(localStorage.getItem("permissions")) || [];
+  console.log(modulesPermissions);
  function checkPermission(permissionName, module) {
     if (module !== "") {
-      const modulesPermissions =
-        JSON.parse(localStorage.getItem("permissions")) || [];
       const checkData = permissionName + "|" + module;
       if (modulesPermissions.length > 0) {
         let match = 0;
