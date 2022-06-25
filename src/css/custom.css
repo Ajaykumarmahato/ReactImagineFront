@@ -10,5 +10,19 @@
 }
 
 
+.login_form{
+  position: absolute;
+  top: 20%;
+  width: 40%;
+  left:30%;
+}
+.signup_form{
+  position: absolute;
+  top: 20%;
+  width: 40%;
+  left:30%;
+}
+
+
 
 

@@ -8,7 +8,7 @@ import {
   SidebarFooter,
   SidebarContent,
 } from "react-pro-sidebar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { axiosGet } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import checkPermission from "../../Utils/PermissionChecker";
@@ -18,7 +18,7 @@ function SideBar() {
   const [sideBarOpen,setSideBarOpen]=useState(false);
   const [modules,setModules]=useState([]);
 
-
+  let navigate = useNavigate();
    useEffect(()=>{
     getModules();
   },[])
@@ -35,6 +35,12 @@ function SideBar() {
     },(error)=>{
 
     })
+  }
+
+  const logout=()=>{
+    localStorage.clear();
+    navigate('/');
+
   }
 
     return (
@@ -76,7 +82,7 @@ function SideBar() {
               ):null}
             </Menu>  
           </SidebarContent>
-          <SidebarFooter>Logout</SidebarFooter>
+          <SidebarFooter onClick={logout}>Logout</SidebarFooter>
         </ProSidebar>
       </div>
     );

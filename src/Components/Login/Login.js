@@ -46,10 +46,9 @@ function Login() {
     return (
      <>
       <div className="landing w-100">
+              <div className="login_form">
         <div className="container">
-          <div className="row d-flex justify-content-center">
-            <div className="col-lg-12 col-sm-12 col-md-12 w-50">
-              <div className="card">
+                <div className="card">
                 <div className="card-header">Login</div>
                 <div className="card-body">
                   <div className="form-group">
@@ -87,10 +86,9 @@ function Login() {
                     <Link to="/signup">Register Here!</Link>
                   </div>
               </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
       </>
     );
 }

@@ -22,15 +22,9 @@ function Signup(){
     const [file,setFile]=useState('');
     const [error,setError]=useState(false);
 
-
-    // handleFileChnage=(e)=>{
-    //     var target = e.target;
-    //     var name=target.name;
-    //     this.setState({[name]:target.files[0]})
-    // }
-
     function handleSignup(e){
         e.preventDefault();
+        setError(false);
 
         let formData=new FormData();
         let user={
@@ -40,9 +34,9 @@ function Signup(){
             password:password
         }
         if(user.name==""||user.email==""||user.password==""){
-                setError(true);
-        swal("Error","Fill All the fields","error");
-        return;
+          setError(true);
+          swal("Error","Fill All the fields","error");
+          return;
         }
         formData.append('user',JSON.stringify(user));
         if(file!=""){
@@ -52,6 +46,7 @@ function Signup(){
         axiosPost(URL.registerUser,formData,(response)=>{
            
             if(response.data.success){
+              setName('');
                 setEmail('');
                 setContactNumber('');
                 setPassword('');
@@ -66,8 +61,10 @@ function Signup(){
         return(
             <div className="landing w-100">
         <div className="container">
-          <div className="row d-flex justify-content-center">
-            <div className="col-lg-12 col-sm-12 col-md-12 w-50">
+         <div className="signup_form">
+           <div className="card">
+                <div className="card-header">Signup</div>
+                <div className="card-body">
             <Form>
         <FormGroup row>
           <Label for="exampleEmail" sm={2}>
@@ -122,7 +119,7 @@ function Signup(){
             Image
           </Label>
           <Col sm={10}>
-            <Input type="file" name="file"  id="exampleFile"  onChange={(e)=>setPassword(e.target.files[0])} />
+            <Input type="file" name="file"  id="exampleFile"  onChange={(e)=>setFile(e.target.files[0])} />
           </Col>
         </FormGroup>
        
@@ -142,10 +139,11 @@ function Signup(){
         </FormGroup>
          <FormGroup>
           <Col className="d-flex justify-content-end">
-            <Button onClick={(e)=>handleSignup(e)}>Submit</Button>
+            <Button  onClick={(e)=>handleSignup(e)}>Submit</Button>
           </Col>
         </FormGroup>
       </Form>
+      </div>
       </div>
       </div>
       </div>
