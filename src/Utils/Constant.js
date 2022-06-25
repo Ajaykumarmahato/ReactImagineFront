@@ -6,7 +6,7 @@ export const URL = {
 
 
     // modules
-    modules:`${serverLocation}/auth/modules`,
+    modules:`${serverLocation}/free/modules`,
 };
 
 

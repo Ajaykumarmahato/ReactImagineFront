@@ -1,14 +1,4 @@
-import React from "react";
 
-
-// function checkPermission(permissionName,module){
-//     let permissions=JSON.parse(localStorage.getItem('permissions'));
-//     if(permissions.includes(permissionName+'|'+Module)){
-//         return true;
-//     }else{
-//         return false;
-//     }
-// }
 const modulesPermissions =
   JSON.parse(localStorage.getItem("permissions")) || [];
   console.log(modulesPermissions);
