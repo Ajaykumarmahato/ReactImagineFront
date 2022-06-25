@@ -38,7 +38,7 @@ function Login() {
         }
       },
       (err) => {
-        debugger;
+            setSpinner(false);
       }
     );
   };
