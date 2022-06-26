@@ -1,42 +1,44 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import WindowModal from "../WindowModal/WindowModal";
 import CategoryDetail from "./CategoryDetail";
 import CategoryForm from "./CategoryForm";
 import Swal from "sweetalert2";
 import SideBar from "../Sidebar/SideBar";
-class Category extends Component {
-  state = {
-    addCategoryModalOpen: false,
-    detailCategoryModalOpen: false,
-    categories: [
-      {
-        id: 1,
-        title: "Food",
-        description: "food for good",
-      },
-      {
-        id: 2,
-        title: "Transportation",
-        description: "Bus Transportation",
-      },
-    ],
-    categoryDetail: "",
+import { URL } from "../../Utils/Constant";
+import { axiosGet } from "../../Utils/AxiosApi";
+function Category(){
+
+  const [addCategoryModalOpen,setAddCategoryModalOpen]=useState(false);
+  const [detailCategoryModalOpen,setDetailCategoryModalOpen]=useState(false);
+  const [categoryDetail,setCategoryDetail]=useState("");
+  const [categories,setCategories]=useState([]);
+
+
+
+  useEffect(()=>{
+    getCategories();
+  },[])
+
+  const toggleAddCategory = () => {
+    setAddCategoryModalOpen(!addCategoryModalOpen);
   };
 
-  toggleAddCategory = () => {
-    this.setState({
-      addCategoryModalOpen: !this.state.addCategoryModalOpen,
-    });
+  const toggleDetailCategory = (category) => {
+    setDetailCategoryModalOpen(!detailCategoryModalOpen);
+    setCategoryDetail(category);
   };
 
-  toggleDetailCategory = (category) => {
-    this.setState({
-      detailCategoryModalOpen: !this.state.detailCategoryModalOpen,
-      categoryDetail: category,
-    });
-  };
+  const getCategories=()=>{
+    axiosGet(URL.categories,(response)=>{
+      if(response.data.success){
+        setCategories(response.data.data.items)
+      }
+    },(error)=>{
 
-  deleteCategory = () => {
+    })
+  }
+
+  const deleteCategory = () => {
     Swal.fire({
       title: "Warning!",
       text: "Are you sure?",
@@ -48,13 +50,12 @@ class Category extends Component {
     });
   };
 
-  render() {
     return (
       <>
         <div className="landing">
           <button
             className="btn btn-primary m-4"
-            onClick={this.toggleAddCategory}
+            onClick={toggleAddCategory}
           >
             Add Category
           </button>
@@ -69,25 +70,26 @@ class Category extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.categories.map((category, idx) => {
+              {categories.length>0?(
+                categories.map((category, idx) => {
                 return (
                   <>
                     <tr>
                       <th>{idx + 1}</th>
                       <td>Image</td>
-                      <td>{category.title}</td>
+                      <td>{category.name}</td>
                       <td>{category.description}</td>
                       <td>
                         <button
                           className="btn btn-success mr-3"
-                          onClick={() => this.toggleDetailCategory(category)}
+                          onClick={()=>toggleDetailCategory(category)}
                         >
                           Details
                         </button>
                         <button className="btn btn-warning mr-2 ">Edit</button>
                         <button
                           className="btn btn-danger mr-2"
-                          onClick={this.deleteCategory}
+                          onClick={deleteCategory}
                         >
                           Delete
                         </button>
@@ -95,7 +97,9 @@ class Category extends Component {
                     </tr>
                   </>
                 );
-              })}
+              })
+              ):null}
+              
             </tbody>
           </table>
         </div>
@@ -103,12 +107,12 @@ class Category extends Component {
         {/* add category modal start */}
         <WindowModal
           titleModal="Add Category"
-          openModal={this.state.addCategoryModalOpen}
-          toggleModal={this.toggleAddCategory}
+          openModal={addCategoryModalOpen}
+          toggleModal={toggleAddCategory}
           footerModal={null}
           bodyModal={
             <>
-              <CategoryForm />
+              <CategoryForm getCategories={getCategories} toggleAddCategory={toggleAddCategory}/>
             </>
           }
         />
@@ -116,19 +120,18 @@ class Category extends Component {
 
         {/* category detail modal start */}
         <WindowModal
-          titleModal={this.state.categoryDetail.title}
-          openModal={this.state.detailCategoryModalOpen}
-          toggleModal={this.toggleDetailCategory}
+          titleModal={categoryDetail.name}
+          openModal={detailCategoryModalOpen}
+          toggleModal={toggleDetailCategory}
           footerModal={null}
           bodyModal={
             <>
-              <CategoryDetail category={this.state.categoryDetail} />
+              <CategoryDetail category={categoryDetail} />
             </>
           }
         />
         {/* category detail modal end */}
       </>
     );
-  }
 }
 export default Category;

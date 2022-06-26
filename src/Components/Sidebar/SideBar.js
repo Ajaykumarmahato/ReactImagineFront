@@ -19,6 +19,7 @@ function SideBar() {
   const [modules,setModules]=useState([]);
 
   let navigate = useNavigate();
+
    useEffect(()=>{
     getModules();
   },[])

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Col,
@@ -8,8 +8,46 @@ import {
   Input,
   Label,
 } from "reactstrap";
+import { axiosPost } from "../../Utils/AxiosApi";
+import { URL } from "../../Utils/Constant";
+import swal from "sweetalert";
 
-function CategoryForm() {
+function CategoryForm(props) {
+  const [name,setName]=useState("");
+  const [description,setDescription]=useState("");
+  const [file,setFile]=useState("");
+
+  const insertCategory=(e)=>{
+    e.preventDefault();
+    let formData=new FormData();
+
+    let category={
+      name:name,
+      description:description
+    }
+
+    formData.append('category',JSON.stringify(category));
+    if(file!=""){
+      formData.append('file',file);
+    }
+
+    axiosPost(URL.categories,formData,(response)=>{
+      if(response.data.success){
+        props.toggleAddCategory();
+        props.getCategories();
+        setName("");
+        setDescription("");
+        setFile("");
+        swal("Success",response.data.message,"success");
+        
+      }
+
+    },(eror)=>{
+
+    })
+
+
+  }
 
     return (
       <Form>
@@ -22,6 +60,8 @@ function CategoryForm() {
               type="text"
               name="name"
               id="exampleEmail"
+              value={name}
+              onChange={(e)=>setName(e.target.value)}
               placeholder="Category Name"
             />
           </Col>
@@ -31,7 +71,7 @@ function CategoryForm() {
             Description
           </Label>
           <Col sm={10}>
-            <Input type="textarea" name="description" id="exampleText" />
+            <Input type="textarea" name="description" id="exampleText" onChange={(e)=>setDescription(e.target.value)}  value={description}/>
           </Col>
         </FormGroup>
         <FormGroup row>
@@ -39,12 +79,12 @@ function CategoryForm() {
             Image
           </Label>
           <Col sm={10}>
-            <Input type="file" name="file" id="exampleFile" />
+            <Input type="file" name="file" onChange={(e)=>setFile(e.target.files[0])} id="exampleFile" />
           </Col>
         </FormGroup>
         <FormGroup>
           <Col className="d-flex justify-content-end">
-            <Button>Submit</Button>
+            <Button onClick={(e)=>insertCategory(e)}>Submit</Button>
           </Col>
         </FormGroup>
       </Form>

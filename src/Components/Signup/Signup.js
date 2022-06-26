@@ -9,7 +9,6 @@ import {
   Label,
 } from "reactstrap";
 import swal from "sweetalert";
-import Swal from "sweetalert2";
 import { axiosPost } from "../../Utils/AxiosApi";
 import { headers, URL } from "../../Utils/Constant";
 
@@ -46,7 +45,7 @@ function Signup(){
         axiosPost(URL.registerUser,formData,(response)=>{
            
             if(response.data.success){
-              setName('');
+                setName('');
                 setEmail('');
                 setContactNumber('');
                 setPassword('');
