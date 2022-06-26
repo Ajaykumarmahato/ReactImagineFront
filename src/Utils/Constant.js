@@ -7,6 +7,9 @@ export const URL = {
 
     // modules
     modules:`${serverLocation}/free/modules`,
+
+    // categories
+    categories:`${serverLocation}/auth/categories`,
 };
 
 

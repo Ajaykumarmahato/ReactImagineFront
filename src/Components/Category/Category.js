@@ -62,6 +62,7 @@ class Category extends Component {
             <thead>
               <tr>
                 <th>#</th>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Action</th>
@@ -73,6 +74,7 @@ class Category extends Component {
                   <>
                     <tr>
                       <th>{idx + 1}</th>
+                      <td>Image</td>
                       <td>{category.title}</td>
                       <td>{category.description}</td>
                       <td>
