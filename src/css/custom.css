@@ -1,8 +1,8 @@
 .landing {
   background-color: #89e6e6;
-  height: 100vh;
+  max-height: 100vh;
   width: 100%;
-  
+overflow-x: auto;  
 }
 
 .sidebar {
@@ -23,6 +23,11 @@
   left:30%;
 }
 
-
+.image{
+  max-height: 50px;
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+}
 
 

@@ -25,6 +25,7 @@ function Login() {
       URL.login,
       data,
       (response) => {
+        debugger;
         if (response.data.success) {
           localStorage.setItem("token", response.data.data.token);
           localStorage.setItem(
@@ -35,10 +36,12 @@ function Login() {
             localStorage.setItem("isLoggedIn", true);
             setSpinner(false);
             navigate('/dashboard');
-        }
+          }
       },
       (err) => {
             setSpinner(false);
+            swal('Error',err.response.data.message,
+            'error');
       }
     );
   };

@@ -4,8 +4,9 @@ import CategoryDetail from "./CategoryDetail";
 import CategoryForm from "./CategoryForm";
 import Swal from "sweetalert2";
 import SideBar from "../Sidebar/SideBar";
-import { URL } from "../../Utils/Constant";
+import { fileUrl, URL } from "../../Utils/Constant";
 import { axiosGet } from "../../Utils/AxiosApi";
+import swal from "sweetalert";
 function Category(){
 
   const [addCategoryModalOpen,setAddCategoryModalOpen]=useState(false);
@@ -31,6 +32,7 @@ function Category(){
   const getCategories=()=>{
     axiosGet(URL.categories,(response)=>{
       if(response.data.success){
+        debugger;
         setCategories(response.data.data.items)
       }
     },(error)=>{
@@ -38,15 +40,35 @@ function Category(){
     })
   }
 
-  const deleteCategory = () => {
-    Swal.fire({
-      title: "Warning!",
-      text: "Are you sure?",
-      icon: "warning",
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
+  const deleteCategory = (id) => {
+    debugger;
+    swal({
+      title: "Warning",
+      text:
+        "Are you sure you want to delete this record.",
+      icon: "error",
+      dangerMode: true,
+      closeOnClickOutside: false,
+      outsideClick: false,
+      buttons: {
+        cancel: true,
+        confirm: true,
+      },
+    }).then((willDelete) => {
+      if (willDelete) {
+        axiosGet(`${URL.deleteCategory}/${id}`,(response)=>{
+          if(response.data.success){
+            swal('Success',response.data.message,'success');
+            getCategories();
+          }
+        },
+        (error)=>{
+
+        })
+
+      }else{
+        swal('Info','Your record is safe','info');
+      }
     });
   };
 
@@ -76,7 +98,11 @@ function Category(){
                   <>
                     <tr>
                       <th>{idx + 1}</th>
-                      <td>Image</td>
+                      <td>{category.media.length>0?(
+                       <>
+                       <img className="img-fluid image" src={fileUrl+'/'+category.media[0].id+'/'+category.media[0].file_name}/>
+                       </>
+                      ):<>-</>}</td>
                       <td>{category.name}</td>
                       <td>{category.description}</td>
                       <td>
@@ -89,7 +115,7 @@ function Category(){
                         <button className="btn btn-warning mr-2 ">Edit</button>
                         <button
                           className="btn btn-danger mr-2"
-                          onClick={deleteCategory}
+                          onClick={()=>deleteCategory(category.id)}
                         >
                           Delete
                         </button>
