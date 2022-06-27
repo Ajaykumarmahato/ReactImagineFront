@@ -81,9 +81,13 @@ debugger;
                 )
               })
               ):null}
+              <MenuItem onClick={logout}>Logout
+                                
+                      </MenuItem>
+              
             </Menu>  
           </SidebarContent>
-          <SidebarFooter onClick={logout}>Logout</SidebarFooter>
+          {/* <SidebarFooter onClick={logout}>Logout</SidebarFooter> */}
         </ProSidebar>
       </div>
     );

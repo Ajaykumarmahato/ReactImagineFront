@@ -99,7 +99,7 @@ function Category(){
             </thead>
             <tbody>
               {spinner?(
-                <SmallSpinner/>
+                  <SmallSpinner/>
               ):null}
               {categories.length>0?(
                 categories.map((category, idx) => {
@@ -117,14 +117,16 @@ function Category(){
                       <td>{category.description}</td>
                       <td>
                         <TbListDetails title="view" className="detail-icon"  onClick={()=>toggleDetailCategory(category)}/>
-                        <RiEditBoxLine title="edit" className="edit-icon"/>
+                        {/* <RiEditBoxLine title="edit" className="edit-icon"/> */}
                         <RiDeleteBin7Line title="delete" className="delete-icon" onClick={()=>deleteCategory(category.id)} />
                       </td>
                     </tr>
                   </>
                 );
               })
-              ):null}
+              ):<tr>
+                No records...
+                </tr>}
               
             </tbody>
           </table>

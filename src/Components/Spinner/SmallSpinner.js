@@ -3,7 +3,7 @@ import { SpinnerRoundOutlined } from 'spinners-react';
 
 function SmallSpinner(){
     return(
-        <SpinnerRoundOutlined size={20} enabled={true} />
+        <SpinnerRoundOutlined size={30} enabled={true} />
     );
 }
 
