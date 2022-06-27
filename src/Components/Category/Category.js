@@ -7,12 +7,17 @@ import SideBar from "../Sidebar/SideBar";
 import { fileUrl, URL } from "../../Utils/Constant";
 import { axiosGet } from "../../Utils/AxiosApi";
 import swal from "sweetalert";
+import { RiDeleteBin7Line,RiAddCircleLine,RiEditBoxLine} from "react-icons/ri";
+import { TbListDetails} from "react-icons/tb";
+import SmallSpinner from "../Spinner/SmallSpinner";
+
 function Category(){
 
   const [addCategoryModalOpen,setAddCategoryModalOpen]=useState(false);
   const [detailCategoryModalOpen,setDetailCategoryModalOpen]=useState(false);
   const [categoryDetail,setCategoryDetail]=useState("");
   const [categories,setCategories]=useState([]);
+  const [spinner,setSpinner]=useState(true);
 
 
 
@@ -32,8 +37,8 @@ function Category(){
   const getCategories=()=>{
     axiosGet(URL.categories,(response)=>{
       if(response.data.success){
-        debugger;
-        setCategories(response.data.data.items)
+        setCategories(response.data.data.items);
+        setSpinner(false);
       }
     },(error)=>{
 
@@ -79,7 +84,7 @@ function Category(){
             className="btn btn-primary m-4"
             onClick={toggleAddCategory}
           >
-            Add Category
+            Add <RiAddCircleLine title="Add" className="add-icon"/>
           </button>
           <table className="table">
             <thead>
@@ -90,13 +95,18 @@ function Category(){
                 <th>Description</th>
                 <th>Action</th>
               </tr>
+                
             </thead>
             <tbody>
+              {spinner?(
+                <SmallSpinner/>
+              ):null}
               {categories.length>0?(
                 categories.map((category, idx) => {
-                return (
-                  <>
-                    <tr>
+                  return (
+                    <>
+                  <tr>
+                     
                       <th>{idx + 1}</th>
                       <td>{category.media.length>0?(
                        <>
@@ -106,19 +116,9 @@ function Category(){
                       <td>{category.name}</td>
                       <td>{category.description}</td>
                       <td>
-                        <button
-                          className="btn btn-success mr-3"
-                          onClick={()=>toggleDetailCategory(category)}
-                        >
-                          Details
-                        </button>
-                        <button className="btn btn-warning mr-2 ">Edit</button>
-                        <button
-                          className="btn btn-danger mr-2"
-                          onClick={()=>deleteCategory(category.id)}
-                        >
-                          Delete
-                        </button>
+                        <TbListDetails title="view" className="detail-icon"  onClick={()=>toggleDetailCategory(category)}/>
+                        <RiEditBoxLine title="edit" className="edit-icon"/>
+                        <RiDeleteBin7Line title="delete" className="delete-icon" onClick={()=>deleteCategory(category.id)} />
                       </td>
                     </tr>
                   </>

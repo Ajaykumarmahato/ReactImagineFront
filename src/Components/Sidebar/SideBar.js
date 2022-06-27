@@ -14,7 +14,7 @@ import { URL } from "../../Utils/Constant";
 import checkPermission from "../../Utils/PermissionChecker";
 
 function SideBar() {
-
+debugger;
   const [sideBarOpen,setSideBarOpen]=useState(false);
   const [modules,setModules]=useState([]);
 

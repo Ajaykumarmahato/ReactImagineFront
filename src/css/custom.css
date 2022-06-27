@@ -30,4 +30,21 @@ overflow-x: auto;
     margin-bottom: 20px;
 }
 
+.edit-icon{
+  font-size: 20px;
+  color:sandybrown;
+}
+.delete-icon{
+  font-size: 20px;
+  color:red;
+}
+.detail-icon{
+  font-size: 20px;
+  color:green;
+}
+.add-icon{
+  font-size: 20px;
+  color:blue;
+}
+
 

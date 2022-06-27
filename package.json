@@ -12,11 +12,13 @@
     "react": "^18.0.0",
     "react-bootstrap": "^2.2.3",
     "react-dom": "^18.0.0",
+    "react-icons": "^4.4.0",
     "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
     "react-sidebar": "^3.0.2",
     "reactstrap": "^9.0.2",
+    "spinners-react": "^1.0.7",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.4.8",
     "web-vitals": "^2.1.4"
