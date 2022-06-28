@@ -16,6 +16,7 @@
     "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
+    "react-select": "^5.3.2",
     "react-sidebar": "^3.0.2",
     "reactstrap": "^9.0.2",
     "spinners-react": "^1.0.7",
