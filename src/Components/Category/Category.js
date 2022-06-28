@@ -150,7 +150,7 @@ function Category(){
         <WindowModal
           titleModal={categoryDetail.name}
           openModal={detailCategoryModalOpen}
-          toggleModal={toggleDetailCategory}
+          toggleModal={()=>toggleDetailCategory("")}
           footerModal={null}
           bodyModal={
             <>
