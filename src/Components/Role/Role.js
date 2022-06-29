@@ -5,6 +5,7 @@ import { axiosGet } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import SmallSpinner from "../Spinner/SmallSpinner";
 import WindowModal from "../WindowModal/WindowModal";
+import EditRolePermissionForm from "./EditRolePermissionForm";
 import RoleForm from "./RoleForm";
 
 function Role(){
@@ -13,6 +14,8 @@ function Role(){
     const [roles, setRoles]=useState([]);
     const [spinner, setSpinner]=useState(true);
     const [addRoleModalOpen, setAddRoleModalOpen]=useState(false);
+    const [editRolePermissionModalOpen, setEditRolePermissionModalOpen]=useState(false);
+    const [rolePermissions, setRolePermissions]=useState([]);
 
     useEffect(()=>{
         getRoles();
@@ -21,6 +24,12 @@ function Role(){
 
     const toggleAddRoleModal=()=>{
       setAddRoleModalOpen(!addRoleModalOpen);
+    }
+
+    const toggleEditRolePermissionModal=(rolePermissions)=>{
+      debugger;
+      setRolePermissions(rolePermissions);
+      setEditRolePermissionModalOpen(!editRolePermissionModalOpen);
     }
 
     const getRoles=()=>{
@@ -65,7 +74,7 @@ function Role(){
                          <tr>
                       <th>{idx+1}</th>
                       <td>{role.name}</td>
-                      <td><RiEyeLine className="eye-icon" title="view permissions" /></td>
+                      <td><RiEyeLine className="eye-icon" title="view permissions" onClick={(e)=>toggleEditRolePermissionModal(role.permissions)} /></td>
                       <td>
                         <TbListDetails title="view" className="detail-icon"  />
                         {/* <RiEditBoxLine title="edit" className="edit-icon"/> */}
@@ -89,6 +98,18 @@ function Role(){
                   bodyModal={
                     <>
                       <RoleForm getRoles={getRoles} toggleAddRoleModal={toggleAddRoleModal}/>
+                    </>
+                  }
+                 />
+                 {/* edit role's permissions modal */}
+                 <WindowModal
+                  titleModal="Edit Permissions"
+                  openModal={editRolePermissionModalOpen}
+                  toggleModal={toggleEditRolePermissionModal}
+                  footerModal={null}
+                  bodyModal={
+                    <>
+                     <EditRolePermissionForm rolePermissions={rolePermissions}/>
                     </>
                   }
                  />

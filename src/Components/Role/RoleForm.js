@@ -7,10 +7,11 @@ import {
   Input,
   Label,
 } from "reactstrap";
-import Select from 'react-select'
+import Select from 'react-select';
 import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import swal from "sweetalert";
+import makeAnimated from 'react-select/animated';
 
 function RoleForm(props){
 
@@ -18,6 +19,8 @@ function RoleForm(props){
     const [name,setName]=useState("");
     const [permissionsOption,setPermissionsOption]=useState([]);
     const [permissions,setPermissions]=useState([]);
+
+    const animatedComponents = makeAnimated();
 
     useEffect(()=>{
         getPermissions();
@@ -94,7 +97,7 @@ function RoleForm(props){
             Permissions
           </Label>
           <Col sm={10}>
-            <Select isMulti closeMenuOnSelect={false} options={permissionsOption} onChange={handleSelectChange} />
+            <Select components={animatedComponents} isMulti closeMenuOnSelect={false} options={permissionsOption} onChange={handleSelectChange} />
           </Col>
         </FormGroup>
         <FormGroup>
