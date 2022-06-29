@@ -134,6 +134,7 @@ function Category(){
 
         {/* add category modal start */}
         <WindowModal
+          size={'lg'}
           titleModal="Add Category"
           openModal={addCategoryModalOpen}
           toggleModal={toggleAddCategory}
@@ -148,6 +149,7 @@ function Category(){
 
         {/* category detail modal start */}
         <WindowModal
+          size={'md'}
           titleModal={categoryDetail.name}
           openModal={detailCategoryModalOpen}
           toggleModal={()=>toggleDetailCategory("")}

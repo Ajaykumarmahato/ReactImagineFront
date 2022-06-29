@@ -7,63 +7,110 @@ import {
     Input,
     Label,
   } from "reactstrap";
-import Select from 'react-select'
 import { URL } from "../../Utils/Constant";
-import { axiosGet } from "../../Utils/AxiosApi";
-import makeAnimated from 'react-select/animated';
+import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
+import swal from "sweetalert";
 
 function EditRolePermissionForm(props){
-    const [permissionsOption,setPermissionsOption]=useState([]);
-    const [defaultPermissionsOption,setDefaultPermissionsOption]=useState([]);
 
-    const animatedComponents = makeAnimated();
+    const [roleModulePermissions,setRoleModulePermissions]=useState([]);
+    const [permissions,setPermissions]=useState([]);
+
 
     useEffect(()=>{
-        existingPermissions();
-        getPermissions();
+        getRoleModulePermissions();
     },[]);
 
-    const getPermissions=()=>{
-        axiosGet(URL.permissions,(response)=>{
+    const getRoleModulePermissions=()=>{
+        axiosGet(URL.moduleRolePermissions+`/${props.roleId}`,(response)=>{
             if(response.data.success){
-                const options=[];
+                setRoleModulePermissions(response.data.data.items);
                 if(response.data.data.items.length>0){
-                    response.data.data.items.forEach((item)=>{
-                    options.push({value:item.id,label:item.name})
-                    })
+                  const permissionIds=[];
+                  response.data.data.items.forEach((element)=>{
+                    if(element.action.length>0){
+                      element.action.forEach((actn)=>{
+                        if(actn.hasPermission){
+                          permissionIds.push(actn.id.toString());
+                        }
+                      })
+                    }
+                  })
+                  setPermissions(permissionIds);
                 }
-                setPermissionsOption(options);
             }
-
         },(error)=>{
 
         })
     }
-
-    const existingPermissions=()=>{
-        if(props.rolePermissions.length>0){
-            const defaultOptions=[];
-            props.rolePermissions.forEach((item)=>{
-                defaultOptions.push({value:item.id,label:item.name})
-            })
-            setDefaultPermissionsOption(defaultOptions);
-        }
+    const handlePermissionCheck=(e)=>{
+      const permissionIds=permissions;
+      if(e.target.checked){
+        permissionIds.push(e.target.value);
+      }else{
+        permissionIds.splice(permissionIds.indexOf(e.target.value), 1);
+      }
+      setPermissions(permissionIds);
     }
+
+
+    const updatePermission=(e)=>{
+      let data={
+        roleId:props.roleId,
+        permissions:permissions
+      }
+      debugger;
+      axiosPost(URL.editRolePermissions,data,(response)=>{
+        if(response.data.success){
+          swal('Success',response.data.message,'success');
+          props.toggleEditRolePermissionModal(props.roleId);
+        }
+      },(error)=>{
+           swal('Error',error.response.data.message,'error');
+      })
+    }
+
+
+   
 
 return (
     <>
     <Form>
-     <FormGroup row>
-          <Label for="exampleEmail" sm={3}>
-            Permissions
-          </Label>
-          <Col sm={10}>
-            <Select components={animatedComponents} isMulti closeMenuOnSelect={false} value={defaultPermissionsOption} options={permissionsOption}   />
-          </Col>
-        </FormGroup>
+         <FormGroup>
+         <div className="card">
+                <div className="card-header">Choose Permissions</div>
+                <div className="card-body module-permission-box">
+                  {roleModulePermissions.length>0?(
+                    roleModulePermissions.map((roleModulePermission,idx)=>{
+                      return(
+                        <div className="card">
+                        <div className="card-header">{roleModulePermission.moduleName}</div>
+                        <div className="card-body d-flex flex-wrap justify-content-between">
+                          {roleModulePermission.action.length>0?(
+                            roleModulePermission.action.map((actn,id)=>{
+                              return(
+                                 <FormGroup check>
+                                  <Label check>
+                                    <Input type="checkbox" value={actn.id} defaultChecked={actn.hasPermission} onClick={(e)=>handlePermissionCheck(e)} />{' '}
+                                    {actn.name}
+                                  </Label>
+                                </FormGroup>
+                              )
+                            })
+                          ):null}
+                           
+                        </div>
+                  </div>
+                      )
+                    })
+                  ):<>No Permissions</>}
+                  
+                </div>
+          </div>
+           </FormGroup>
         <FormGroup>
           <Col className="d-flex justify-content-end">
-            <Button >Submit</Button>
+            <Button onClick={(e)=>updatePermission(e)}>Save Changes</Button>
           </Col>
         </FormGroup>
        

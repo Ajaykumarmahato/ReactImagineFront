@@ -51,4 +51,9 @@ overflow-x: auto;
   color:teal;
 }
 
+.module-permission-box{
+  max-height: 400px;
+  overflow-x: auto;
+}
+
 

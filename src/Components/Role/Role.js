@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { RiDeleteBin7Line,RiAddCircleLine,RiEditBoxLine, RiEyeLine} from "react-icons/ri";
+import { RiDeleteBin7Line,RiAddCircleLine,RiEditBoxLine, RiEyeLine, RiEditLine} from "react-icons/ri";
 import { TbListDetails} from "react-icons/tb";
 import { axiosGet } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
@@ -15,7 +15,7 @@ function Role(){
     const [spinner, setSpinner]=useState(true);
     const [addRoleModalOpen, setAddRoleModalOpen]=useState(false);
     const [editRolePermissionModalOpen, setEditRolePermissionModalOpen]=useState(false);
-    const [rolePermissions, setRolePermissions]=useState([]);
+    const [roleId, setRoleId]=useState("");
 
     useEffect(()=>{
         getRoles();
@@ -23,12 +23,12 @@ function Role(){
 
 
     const toggleAddRoleModal=()=>{
+      
       setAddRoleModalOpen(!addRoleModalOpen);
     }
 
-    const toggleEditRolePermissionModal=(rolePermissions)=>{
-      debugger;
-      setRolePermissions(rolePermissions);
+    const toggleEditRolePermissionModal=(roleId)=>{
+      setRoleId(roleId);
       setEditRolePermissionModalOpen(!editRolePermissionModalOpen);
     }
 
@@ -74,10 +74,8 @@ function Role(){
                          <tr>
                       <th>{idx+1}</th>
                       <td>{role.name}</td>
-                      <td><RiEyeLine className="eye-icon" title="view permissions" onClick={(e)=>toggleEditRolePermissionModal(role.permissions)} /></td>
+                      <td><RiEditLine className="edit-icon" title="view/edit permissions" onClick={(e)=>toggleEditRolePermissionModal(role.id)} /></td>
                       <td>
-                        <TbListDetails title="view" className="detail-icon"  />
-                        {/* <RiEditBoxLine title="edit" className="edit-icon"/> */}
                         <RiDeleteBin7Line title="delete" className="delete-icon"  />
                       </td>
                     </tr>
@@ -91,6 +89,7 @@ function Role(){
                  
                  {/* add role modal */}
                  <WindowModal
+                  size={'lg'}
                   titleModal="Add Role"
                   openModal={addRoleModalOpen}
                   toggleModal={toggleAddRoleModal}
@@ -103,13 +102,14 @@ function Role(){
                  />
                  {/* edit role's permissions modal */}
                  <WindowModal
+                  size={'lg'}
                   titleModal="Edit Permissions"
                   openModal={editRolePermissionModalOpen}
                   toggleModal={toggleEditRolePermissionModal}
                   footerModal={null}
                   bodyModal={
                     <>
-                     <EditRolePermissionForm rolePermissions={rolePermissions}/>
+                     <EditRolePermissionForm toggleEditRolePermissionModal={toggleEditRolePermissionModal} roleId={roleId} />
                     </>
                   }
                  />

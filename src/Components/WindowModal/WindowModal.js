@@ -3,7 +3,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 
 function WindowModal(props) {
     return (
-      <Modal isOpen={props.openModal} toggle={props.toggleModal}>
+      <Modal size={props.size} isOpen={props.openModal} toggle={props.toggleModal}>
         <ModalHeader toggle={props.toggleModal}>
           {props.titleModal}
         </ModalHeader>

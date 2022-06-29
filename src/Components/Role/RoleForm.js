@@ -7,49 +7,44 @@ import {
   Input,
   Label,
 } from "reactstrap";
-import Select from 'react-select';
 import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import swal from "sweetalert";
-import makeAnimated from 'react-select/animated';
 
 function RoleForm(props){
 
 
     const [name,setName]=useState("");
-    const [permissionsOption,setPermissionsOption]=useState([]);
+    const [modulePermissions,setModulePermissions]=useState([]);
     const [permissions,setPermissions]=useState([]);
 
-    const animatedComponents = makeAnimated();
 
     useEffect(()=>{
-        getPermissions();
+        getModulePermissions();
     },[])
 
 
-    const handleSelectChange=(selected)=>{
-        const permissionIds=[];
-        selected.forEach((item)=>{
-            permissionIds.push(item.value);
-        });
-        setPermissions(permissionIds);
-    }
+ 
 
-    const getPermissions=()=>{
-        axiosGet(URL.permissions,(response)=>{
+    const getModulePermissions=()=>{
+        axiosGet(URL.modulePermissions,(response)=>{
             if(response.data.success){
-                const options=[];
-                if(response.data.data.items.length>0){
-                    response.data.data.items.forEach((item)=>{
-                    options.push({value:item.id,label:item.name})
-                    })
-                }
-                setPermissionsOption(options);
+                setModulePermissions(response.data.data.items);
             }
 
         },(error)=>{
 
         })
+    }
+
+    const handlePermissionCheck=(e)=>{
+      const permissionIds=permissions;
+      if(e.target.checked){
+        permissionIds.push(e.target.value);
+      }else{
+        permissionIds.splice(permissionIds.indexOf(e.target.value), 1);
+      }
+      setPermissions(permissionIds);
     }
 
     const insertRole=(e)=>{
@@ -92,14 +87,38 @@ function RoleForm(props){
             />
           </Col>
         </FormGroup>
-        <FormGroup row>
-          <Label for="exampleEmail" sm={3}>
-            Permissions
-          </Label>
-          <Col sm={10}>
-            <Select components={animatedComponents} isMulti closeMenuOnSelect={false} options={permissionsOption} onChange={handleSelectChange} />
-          </Col>
-        </FormGroup>
+         <FormGroup>
+         <div className="card">
+                <div className="card-header">Choose Permissions</div>
+                <div className="card-body module-permission-box">
+                  {modulePermissions.length>0?(
+                    modulePermissions.map((modulePermission,idx)=>{
+                      return(
+                        <div className="card">
+                        <div className="card-header">{modulePermission.moduleName}</div>
+                        <div className="card-body d-flex flex-wrap justify-content-between">
+                          {modulePermission.action.length>0?(
+                            modulePermission.action.map((actn,id)=>{
+                              return(
+                                 <FormGroup check>
+                                  <Label check>
+                                    <Input type="checkbox" value={actn.id} onClick={(e)=>handlePermissionCheck(e)}/>{' '}
+                                    {actn.name}
+                                  </Label>
+                                </FormGroup>
+                              )
+                            })
+                          ):null}
+                           
+                        </div>
+                  </div>
+                      )
+                    })
+                  ):<>No Permissions</>}
+                  
+                </div>
+          </div>
+           </FormGroup>
         <FormGroup>
           <Col className="d-flex justify-content-end">
             <Button onClick={(e)=>insertRole(e)}>Submit</Button>
