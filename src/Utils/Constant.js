@@ -8,6 +8,7 @@ export const fileUrl = "http://127.0.0.1:8001/storage";
 export const URL = {
     registerUser:`${serverLocation}/free/register-user`,
     login:`${serverLocation}/free/login`,
+    logout:`${serverLocation}/auth/logout`,
 
 
 

@@ -9,6 +9,7 @@ import {
   SidebarContent,
 } from "react-pro-sidebar";
 import { Link, useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 import { axiosGet } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import checkPermission from "../../Utils/PermissionChecker";
@@ -39,9 +40,15 @@ debugger;
   }
 
   const logout=()=>{
-    localStorage.clear();
-    navigate('/');
-
+    axiosGet(URL.logout,(response)=>{
+      if(response.data.success){
+        localStorage.clear();
+        swal('Success',response.data.message,'success');
+        navigate('/');
+      }
+    },(error)=>{
+        swal('Error',error.response.data.message,'error');
+    })
   }
 
     return (
