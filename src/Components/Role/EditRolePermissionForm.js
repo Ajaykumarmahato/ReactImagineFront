@@ -10,11 +10,13 @@ import {
 import { URL } from "../../Utils/Constant";
 import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
 import swal from "sweetalert";
+import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 
 function EditRolePermissionForm(props){
 
     const [roleModulePermissions,setRoleModulePermissions]=useState([]);
     const [permissions,setPermissions]=useState([]);
+    const [submitSpinner,setSubmitSpinner]=useState(false);
 
 
     useEffect(()=>{
@@ -55,6 +57,7 @@ function EditRolePermissionForm(props){
 
 
     const updatePermission=(e)=>{
+      setSubmitSpinner(true);
       let data={
         roleId:props.roleId,
         permissions:permissions
@@ -62,10 +65,14 @@ function EditRolePermissionForm(props){
       debugger;
       axiosPost(URL.editRolePermissions,data,(response)=>{
         if(response.data.success){
+      setSubmitSpinner(false);
+
           swal('Success',response.data.message,'success');
           props.toggleEditRolePermissionModal(props.roleId);
         }
       },(error)=>{
+      setSubmitSpinner(false);
+
            swal('Error',error.response.data.message,'error');
       })
     }
@@ -75,6 +82,7 @@ function EditRolePermissionForm(props){
 
 return (
     <>
+    <FullWindowSpinner text="Please Wait. Saving Changes..." display={submitSpinner}/>
     <Form>
          <FormGroup>
          <div className="card">
@@ -110,7 +118,7 @@ return (
            </FormGroup>
         <FormGroup>
           <Col className="d-flex justify-content-end">
-            <Button onClick={(e)=>updatePermission(e)}>Save Changes</Button>
+            <Button onClick={(e)=>updatePermission(e)} className="btn btn-success">Save Changes</Button>
           </Col>
         </FormGroup>
        

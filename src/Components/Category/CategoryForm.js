@@ -11,14 +11,17 @@ import {
 import { axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import swal from "sweetalert";
+import FullWindowSpinner from '../Spinner/FullWindowSpinner';
 
 function CategoryForm(props) {
   const [name,setName]=useState("");
   const [description,setDescription]=useState("");
   const [file,setFile]=useState("");
+  const [submitSpinner,setSubmitSpinner]=useState(false);
 
   const insertCategory=(e)=>{
     e.preventDefault();
+    setSubmitSpinner(true);
     let formData=new FormData();
 
     let category={
@@ -33,6 +36,8 @@ function CategoryForm(props) {
 
     axiosPost(URL.categories,formData,(response)=>{
       if(response.data.success){
+    setSubmitSpinner(false);
+
         props.toggleAddCategory();
         props.getCategories();
         setName("");
@@ -42,7 +47,9 @@ function CategoryForm(props) {
         
       }
 
-    },(eror)=>{
+    },(error)=>{
+    setSubmitSpinner(false);
+swal('Error',error.response.data.message,'error');
 
     })
 
@@ -50,6 +57,8 @@ function CategoryForm(props) {
   }
 
     return (
+     <>
+     <FullWindowSpinner text="Please Wait. Submitting..." display={submitSpinner}/>
       <Form>
         <FormGroup row>
           <Label for="exampleEmail" sm={2}>
@@ -84,10 +93,11 @@ function CategoryForm(props) {
         </FormGroup>
         <FormGroup>
           <Col className="d-flex justify-content-end">
-            <Button onClick={(e)=>insertCategory(e)}>Submit</Button>
+            <Button onClick={(e)=>insertCategory(e)} className="btn btn-success">Submit</Button>
           </Col>
         </FormGroup>
       </Form>
+     </>
     );
 }
 export default CategoryForm;

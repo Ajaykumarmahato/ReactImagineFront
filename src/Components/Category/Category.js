@@ -10,6 +10,8 @@ import swal from "sweetalert";
 import { RiDeleteBin7Line,RiAddCircleLine,RiEditBoxLine} from "react-icons/ri";
 import { TbListDetails} from "react-icons/tb";
 import SmallSpinner from "../Spinner/SmallSpinner";
+import checkPermission from "../../Utils/PermissionChecker";
+import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 
 
 function Category(){
@@ -19,6 +21,7 @@ function Category(){
   const [categoryDetail,setCategoryDetail]=useState("");
   const [categories,setCategories]=useState([]);
   const [spinner,setSpinner]=useState(true);
+  const [submitSpinner,setSubmitSpinner]=useState(false);
 
 
 
@@ -62,13 +65,17 @@ function Category(){
       },
     }).then((willDelete) => {
       if (willDelete) {
+        setSubmitSpinner(true);
         axiosGet(`${URL.deleteCategory}/${id}`,(response)=>{
           if(response.data.success){
+        setSubmitSpinner(false);
             swal('Success',response.data.message,'success');
             getCategories();
           }
         },
         (error)=>{
+        setSubmitSpinner(false);
+        swal('Error',error.response.data.message,'error');
 
         })
 
@@ -80,13 +87,18 @@ function Category(){
 
     return (
       <>
+      <FullWindowSpinner text="Please Wait. Deleting..." display={submitSpinner} />
         <div className="landing">
-          <button
+         {checkPermission('create','Category')?(
+           <button
             className="btn btn-primary m-4"
             onClick={toggleAddCategory}
           >
             Add <RiAddCircleLine title="Add" className="add-icon"/>
           </button>
+         ):null}
+         <div className="tableContainerDiv" >
+
           <table className="table">
             <thead>
               <tr>
@@ -98,9 +110,8 @@ function Category(){
               </tr>
                 
             </thead>
-            <tbody>
-              
-              {categories.length>0?(
+            <tbody >
+               {categories.length>0?(
                 categories.map((category, idx) => {
                   return (
                     <>
@@ -108,16 +119,21 @@ function Category(){
                      
                       <th>{idx + 1}</th>
                       <td>{category.media.length>0?(
-                       <>
+                        <>
                        <img className="img-fluid image" src={fileUrl+'/'+category.media[0].id+'/'+category.media[0].file_name}/>
                        </>
                       ):<>-</>}</td>
                       <td>{category.name}</td>
                       <td>{category.description}</td>
-                      <td>
-                        <TbListDetails title="view" className="detail-icon"  onClick={()=>toggleDetailCategory(category)}/>
-                        {/* <RiEditBoxLine title="edit" className="edit-icon"/> */}
-                        <RiDeleteBin7Line title="delete" className="delete-icon" onClick={()=>deleteCategory(category.id)} />
+                      <td className="d-flex justify-content-around">
+                        {checkPermission('details','Category')?(
+                          <TbListDetails title="view" className="detail-icon"  onClick={()=>toggleDetailCategory(category)}/>
+                        ):null}
+                        {checkPermission('delete','Category')?(
+                          <RiDeleteBin7Line title="delete" className="delete-icon" onClick={()=>deleteCategory(category.id)} />
+                          ):null}
+                        
+                        
                       </td>
                     </tr>
                   </>
@@ -131,13 +147,14 @@ function Category(){
                       <br></br>Loading Data...
                       </>
                   ) : (
-                      'No Categories'
-                  )}
+                    'No Categories'
+                    )}
                   </td>
                 </tr>)}
               
             </tbody>
           </table>
+                    </div>
         </div>
 
         {/* add category modal start */}

@@ -15,7 +15,6 @@ import { URL } from "../../Utils/Constant";
 import checkPermission from "../../Utils/PermissionChecker";
 
 function SideBar() {
-debugger;
   const [sideBarOpen,setSideBarOpen]=useState(false);
   const [modules,setModules]=useState([]);
 
@@ -40,11 +39,12 @@ debugger;
   }
 
   const logout=()=>{
+     localStorage.clear();
+        navigate('/');
+
     axiosGet(URL.logout,(response)=>{
       if(response.data.success){
-        localStorage.clear();
         swal('Success',response.data.message,'success');
-        navigate('/');
       }
     },(error)=>{
         swal('Error',error.response.data.message,'error');
@@ -53,7 +53,7 @@ debugger;
 
     return (
       <div className="sidebar">
-        <ProSidebar collapsed={sideBarOpen}>
+        <ProSidebar collapsed={sideBarOpen} className="proSidebar">
         <SidebarHeader onClick={toggleSidebar}>
         System
       </SidebarHeader>

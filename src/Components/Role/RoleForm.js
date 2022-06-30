@@ -10,6 +10,7 @@ import {
 import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import swal from "sweetalert";
+import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 
 function RoleForm(props){
 
@@ -17,6 +18,7 @@ function RoleForm(props){
     const [name,setName]=useState("");
     const [modulePermissions,setModulePermissions]=useState([]);
     const [permissions,setPermissions]=useState([]);
+    const [submitSpinner,setSubmitSpinner]=useState(false);
 
 
     useEffect(()=>{
@@ -49,13 +51,14 @@ function RoleForm(props){
 
     const insertRole=(e)=>{
         e.preventDefault();
+        setSubmitSpinner(true);
         let data={
             name:name,
             permissions:permissions
         }
         axiosPost(URL.roles,data,(response)=>{
-            debugger;
             if(response.data.success){
+              setSubmitSpinner(false);
                 props.getRoles();
                 setName("");
                 setPermissions([]);
@@ -64,6 +67,8 @@ function RoleForm(props){
                 
             }
         },(error)=>{
+        setSubmitSpinner(false);
+
            swal('Error',error.response.data.message,'error');
         })
 
@@ -71,6 +76,7 @@ function RoleForm(props){
 
     return(
         <>
+        <FullWindowSpinner text="Please Wait. Submitting..." display={submitSpinner}/>
          <Form>
         <FormGroup row>
           <Label for="exampleEmail" sm={3}>
@@ -121,7 +127,7 @@ function RoleForm(props){
            </FormGroup>
         <FormGroup>
           <Col className="d-flex justify-content-end">
-            <Button onClick={(e)=>insertRole(e)}>Submit</Button>
+            <Button onClick={(e)=>insertRole(e)} className="btn btn-success">Submit</Button>
           </Col>
         </FormGroup>
       </Form>

@@ -23,6 +23,7 @@ export const URL = {
     // roles
     roles:`${serverLocation}/auth/roles`,
     editRolePermissions:`${serverLocation}/auth/roles/edit-role-permissions`,
+    deleteRole:`${serverLocation}/auth/roles/delete`,
 
 
     // permissions
