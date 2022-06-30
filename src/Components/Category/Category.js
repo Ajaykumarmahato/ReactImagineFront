@@ -11,6 +11,7 @@ import { RiDeleteBin7Line,RiAddCircleLine,RiEditBoxLine} from "react-icons/ri";
 import { TbListDetails} from "react-icons/tb";
 import SmallSpinner from "../Spinner/SmallSpinner";
 
+
 function Category(){
 
   const [addCategoryModalOpen,setAddCategoryModalOpen]=useState(false);
@@ -98,9 +99,7 @@ function Category(){
                 
             </thead>
             <tbody>
-              {spinner?(
-                  <SmallSpinner/>
-              ):null}
+              
               {categories.length>0?(
                 categories.map((category, idx) => {
                   return (
@@ -124,9 +123,18 @@ function Category(){
                   </>
                 );
               })
-              ):<tr>
-                No records...
-                </tr>}
+              ):(<tr>
+                  <td colSpan={5} className="text-center">
+                  {spinner ? (
+                      <>
+                      <SmallSpinner />
+                      <br></br>Loading Data...
+                      </>
+                  ) : (
+                      'No Categories'
+                  )}
+                  </td>
+                </tr>)}
               
             </tbody>
           </table>

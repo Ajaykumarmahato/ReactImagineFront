@@ -1,9 +1,9 @@
-import { SpinnerRoundOutlined } from 'spinners-react';
+import { SpinnerCircularSplit } from 'spinners-react';
 
 
 function SmallSpinner(){
     return(
-        <SpinnerRoundOutlined size={30} enabled={true} />
+        <SpinnerCircularSplit size={30} enabled={true} />
     );
 }
 
