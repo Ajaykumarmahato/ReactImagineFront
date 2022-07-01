@@ -19,6 +19,7 @@ export const URL = {
     // categories
     categories:`${serverLocation}/auth/categories`,
     deleteCategory:`${serverLocation}/auth/categories/delete`,
+    searchCategory:`${serverLocation}/auth/categories/search`,
 
     // roles
     roles:`${serverLocation}/auth/roles`,

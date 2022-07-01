@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { RiDeleteBin7Line,RiAddCircleLine,RiEditBoxLine} from "react-icons/ri";
+import { BiSearchAlt} from "react-icons/bi";
 import swal from "sweetalert";
 import { axiosGet } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
@@ -86,6 +87,7 @@ function Role(){
 <>
 <FullWindowSpinner text="Please Wait. Deleting..." display={submitSpinner} />
  <div className="landing">
+ <div className="d-flex justify-content-between">
          {checkPermission('create','Role')?(
            <button
             className="btn btn-primary m-4"
@@ -95,6 +97,15 @@ function Role(){
           
           </button>
          ):null}
+          {checkPermission('search','Role')?(
+           <button
+            className="btn btn-warning m-4 text-light"
+            // onClick={}
+          >
+            Search <BiSearchAlt title="Search" className="search-icon"/>
+          </button>
+         ):null}
+         </div>
            <div className="tableContainerDiv" >
           <table className="table">
             <thead>
@@ -120,7 +131,7 @@ function Role(){
                           <RiEditBoxLine className="edit-icon" title="view/edit permissions" onClick={(e)=>toggleEditRolePermissionModal(role.id)} />
                         ):null}
                       </td>
-                      <td className="d-flex justify-content-around">
+                      <td >
                         {checkPermission('delete','Role')?(
                           <RiDeleteBin7Line title="delete" className="delete-icon" onClick={()=>deleteRole(role.id)}  />
                         ):null}

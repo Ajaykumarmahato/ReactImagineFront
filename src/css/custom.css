@@ -57,6 +57,10 @@
   font-size: 20px;
   color:teal;
 }
+.search-icon{
+  font-size: 20px;
+  color:white;
+}
 
 .module-permission-box{
   max-height: 400px;
