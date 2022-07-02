@@ -17,7 +17,24 @@ function CategoryForm(props) {
   const [name,setName]=useState("");
   const [description,setDescription]=useState("");
   const [file,setFile]=useState("");
+  const [filePreviewSrc,setFilePreviewSrc]=useState("");
   const [submitSpinner,setSubmitSpinner]=useState(false);
+
+
+  const handleFileChange=(e)=>{
+    setFile(e.target.files[0]);
+    // if(e.target.files[0]){
+    //    let reader = new FileReader();
+    //     reader.onload=function(e){
+    //         setFilePreviewSrc(e.target.result);
+    //     }
+    //     reader.readAsDataURL(e.target.files[0]); 
+    // }else{
+    //   setFile("");
+    //   filePreviewSrc("");
+    // }
+
+  }
 
   const insertCategory=(e)=>{
     e.preventDefault();
@@ -30,7 +47,7 @@ function CategoryForm(props) {
     }
 
     formData.append('category',JSON.stringify(category));
-    if(file!=""){
+    if(file!="" ){
       formData.append('file',file);
     }
 
@@ -83,12 +100,19 @@ swal('Error',error.response.data.message,'error');
             <Input type="textarea" name="description" id="exampleText" onChange={(e)=>setDescription(e.target.value)}  value={description}/>
           </Col>
         </FormGroup>
+        {filePreviewSrc!=""?(
+          <FormGroup row>
+          <Col sm={10}>
+            <img className="img-fluid image" src={filePreviewSrc}/>
+          </Col>
+        </FormGroup>
+        ):null}
         <FormGroup row>
           <Label for="exampleFile" sm={2}>
             Image
           </Label>
           <Col sm={10}>
-            <Input type="file" name="file" onChange={(e)=>setFile(e.target.files[0])} id="exampleFile" />
+            <Input type="file" name="file" onChange={(e)=>handleFileChange(e)} id="exampleFile" />
           </Col>
         </FormGroup>
         <FormGroup>
