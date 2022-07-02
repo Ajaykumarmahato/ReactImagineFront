@@ -23,6 +23,7 @@ function Category(){
   const [categories,setCategories]=useState([]);
   const [spinner,setSpinner]=useState(true);
   const [submitSpinner,setSubmitSpinner]=useState(false);
+  const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
 
 
 
@@ -91,19 +92,19 @@ function Category(){
 
 
   const searchCategory=(name)=>{
-    setSubmitSpinner(true);
+    setSearchSubmitSpinner(true);
     let data={
         name:name
     }
     axiosPost(URL.searchCategory,data,(response)=>{
       if(response.data.success){
-        setSubmitSpinner(false);
+        setSearchSubmitSpinner(false);
         toggleSearchCategory();
         setCategories(response.data.data.items);
       }
 
     },(error)=>{
-      setSubmitSpinner(false);
+      setSearchSubmitSpinner(false);
       swal('Error',error.response.data.message,'error');
     })
 }
@@ -111,6 +112,7 @@ function Category(){
     return (
       <>
       <FullWindowSpinner text="Please Wait. Deleting..." display={submitSpinner} />
+      <FullWindowSpinner text="Please Wait. Searching..." display={searchSubmitSpinner} />
         <div className="landing">
          <div className="d-flex justify-content-between">
          {checkPermission('create','Category')?(

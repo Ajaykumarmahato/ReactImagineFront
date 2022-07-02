@@ -4,18 +4,18 @@ import swal from "sweetalert";
 import { axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import {useNavigate} from 'react-router-dom';
-import { Spinner } from "react-bootstrap";
+import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 
 function Login() {
  
   const [email,setEmail]=useState('');
   const [password,setPassword]=useState('');
-  const [spinner,setSpinner]=useState(false);
+  const [submitSpinner,setSubmitSpinner]=useState(false);
   
   let navigate = useNavigate();
 
   function handleLogin(){
-    setSpinner(true);
+    setSubmitSpinner(true);
     let data = {
       email: email,
       password: password,
@@ -34,12 +34,12 @@ function Login() {
             );
             localStorage.setItem("role", response.data.data.roles);
             localStorage.setItem("isLoggedIn", true);
-            setSpinner(false);
             navigate('/dashboard');
+             setSubmitSpinner(true);
           }
       },
       (err) => {
-            setSpinner(false);
+            setSubmitSpinner(true);
             swal('Error',err.response.data.message,
             'error');
       }
@@ -48,6 +48,7 @@ function Login() {
 
     return (
      <>
+     <FullWindowSpinner text="Please Wait. Logging..." display={submitSpinner}/>
       <div className="landing w-100">
               <div className="login_form">
         <div className="container">

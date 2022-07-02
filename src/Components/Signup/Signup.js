@@ -11,6 +11,7 @@ import {
 import swal from "sweetalert";
 import { axiosPost } from "../../Utils/AxiosApi";
 import { headers, URL } from "../../Utils/Constant";
+import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 
 function Signup(){
   
@@ -19,11 +20,11 @@ function Signup(){
     const [contactNumber,setContactNumber]=useState('');
     const [password,setPassword]=useState('');
     const [file,setFile]=useState('');
-    const [error,setError]=useState(false);
+    const [submitSpinner,setSubmitSpinner]=useState(false);
 
     function handleSignup(e){
         e.preventDefault();
-        setError(false);
+ 
 
         let formData=new FormData();
         let user={
@@ -33,10 +34,11 @@ function Signup(){
             password:password
         }
         if(user.name==""||user.email==""||user.password==""){
-          setError(true);
+   
           swal("Error","Fill All the fields","error");
           return;
         }
+        setSubmitSpinner(true);
         formData.append('user',JSON.stringify(user));
         if(file!=""){
             formData.append('file',file);
@@ -50,15 +52,20 @@ function Signup(){
                 setContactNumber('');
                 setPassword('');
                 setFile('');
+                setSubmitSpinner(false);
                 swal("Success",response.data.message,"success");   
             }
         },(err)=>{
+          setSubmitSpinner(false);
              swal("Error",err.response.data.message,"error");  
         });
     }
 
         return(
+          <>
+
             <div className="landing w-100">
+     <FullWindowSpinner text="Please Wait. Submitting..." display={submitSpinner}/>
         <div className="container">
          <div className="signup_form">
            <div className="card">
@@ -147,6 +154,7 @@ function Signup(){
       </div>
       </div>
       </div>
+      </>
         )
 }
 
