@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { RiDeleteBin7Line,RiAddCircleLine,RiEditBoxLine} from "react-icons/ri";
 import { BiSearchAlt} from "react-icons/bi";
 import swal from "sweetalert";
-import { axiosGet } from "../../Utils/AxiosApi";
+import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import checkPermission from "../../Utils/PermissionChecker";
 import FullWindowSpinner from "../Spinner/FullWindowSpinner";
@@ -10,6 +10,7 @@ import SmallSpinner from "../Spinner/SmallSpinner";
 import WindowModal from "../WindowModal/WindowModal";
 import EditRolePermissionForm from "./EditRolePermissionForm";
 import RoleForm from "./RoleForm";
+import SearchRole from "./SearchRole";
 
 function Role(){
 
@@ -20,11 +21,18 @@ function Role(){
     const [editRolePermissionModalOpen, setEditRolePermissionModalOpen]=useState(false);
     const [roleId, setRoleId]=useState("");
     const [submitSpinner, setSubmitSpinner]=useState(false);
+      const [searchRoleModalOpen,setSearchRoleModalOpen]=useState(false);
+  const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
+
+
 
     useEffect(()=>{
         getRoles();
     },[])
 
+  const toggleSearchRole = () => {
+      setSearchRoleModalOpen(!searchRoleModalOpen);
+    };
 
     const toggleAddRoleModal=()=>{
       
@@ -46,6 +54,24 @@ function Role(){
 
         })
     }
+
+    const searchRole=(name)=>{
+    setSearchSubmitSpinner(true);
+    let data={
+        name:name
+    }
+    axiosPost(URL.searchRole,data,(response)=>{
+      if(response.data.success){
+        setSearchSubmitSpinner(false);
+        toggleSearchRole();
+        setRoles(response.data.data.items);
+      }
+
+    },(error)=>{
+      setSearchSubmitSpinner(false);
+      swal('Error',error.response.data.message,'error');
+    })
+}
 
     const deleteRole=(roleId)=>{
       swal({
@@ -86,6 +112,8 @@ function Role(){
     return (
 <>
 <FullWindowSpinner text="Please Wait. Deleting..." display={submitSpinner} />
+      <FullWindowSpinner text="Please Wait. Searching..." display={searchSubmitSpinner} />
+
  <div className="landing">
  <div className="d-flex justify-content-between">
          {checkPermission('create','Role')?(
@@ -100,7 +128,7 @@ function Role(){
           {checkPermission('search','Role')?(
            <button
             className="btn btn-warning m-4 text-light"
-            // onClick={}
+            onClick={toggleSearchRole}
           >
             Search <BiSearchAlt title="Search" className="search-icon"/>
           </button>
@@ -180,6 +208,21 @@ function Role(){
                     </>
                   }
                  />
+
+                  {/* Role search modal start */}
+        <WindowModal
+          size={'md'}
+          titleModal="Search Role"
+          openModal={searchRoleModalOpen}
+          toggleModal={()=>toggleSearchRole()}
+          footerModal={null}
+          bodyModal={
+            <>
+              <SearchRole searchRole={searchRole} />
+            </>
+          }
+        />
+        {/* Role search modal end */}
                  
               
             </tbody>
