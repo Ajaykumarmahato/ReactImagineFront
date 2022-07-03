@@ -18,6 +18,7 @@ export const URL = {
 
     // categories
     categories:`${serverLocation}/auth/categories`,
+    storeCategory:`${serverLocation}/auth/categories/store`,
     deleteCategory:`${serverLocation}/auth/categories/delete`,
     searchCategory:`${serverLocation}/auth/categories/search`,
 

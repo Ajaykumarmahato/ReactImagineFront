@@ -12,6 +12,7 @@ import SmallSpinner from "../Spinner/SmallSpinner";
 import checkPermission from "../../Utils/PermissionChecker";
 import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 import SearchCategory from "./SearchCategory";
+import Pagination from "../Pagination/Pagination";
 
 
 function Category(){
@@ -24,6 +25,12 @@ function Category(){
   const [spinner,setSpinner]=useState(true);
   const [submitSpinner,setSubmitSpinner]=useState(false);
   const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
+  const [itemPerPage,setItemPerPage]=useState(5);
+  const [currentPage,setCurrentPage]=useState(1);
+  const [totalCategory,setTotalCategory]=useState(null);
+  const [totalPage,setTotalPage]=useState(null);
+
+  
 
 
 
@@ -44,9 +51,16 @@ function Category(){
   };
 
   const getCategories=()=>{
-    axiosGet(URL.categories,(response)=>{
+    setSpinner(true);
+    let data={
+      currentPage:currentPage,
+      itemPerPage:itemPerPage
+    }
+    axiosPost(URL.categories,data,(response)=>{
       if(response.data.success){
-        setCategories(response.data.data.items);
+        setTotalCategory(response.data.data.total);
+        setCategories(response.data.data.categories);
+        setTotalPage(Math.ceil(response.data.data.total/itemPerPage));
         setSpinner(false);
       }
     },(error)=>{
@@ -108,6 +122,18 @@ function Category(){
       swal('Error',error.response.data.message,'error');
     })
 }
+
+
+  const handleNext=()=>{
+    let current=currentPage+1;
+    setCurrentPage(current);
+    getCategories();
+  }
+  const handlePrevious=()=>{
+    let current=currentPage-1;
+    setCurrentPage(current);
+    getCategories();
+  }
 
     return (
       <>
@@ -186,6 +212,12 @@ function Category(){
                     )}
                   </td>
                 </tr>)}
+
+                <tr>
+                  <td colSpan={5} className="text-center">
+                    <Pagination totalPage={totalPage} handlePrevious={handlePrevious} handleNext={handleNext} currentPage={currentPage} itemPerPage={itemPerPage} total={totalCategory}/>
+                  </td>
+                </tr>
               
             </tbody>
           </table>

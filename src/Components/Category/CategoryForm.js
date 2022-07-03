@@ -51,12 +51,12 @@ function CategoryForm(props) {
       formData.append('file',file);
     }
 
-    axiosPost(URL.categories,formData,(response)=>{
+    axiosPost(URL.storeCategory,formData,(response)=>{
       if(response.data.success){
-    setSubmitSpinner(false);
+      setSubmitSpinner(false);
 
         props.toggleAddCategory();
-        props.getCategories();
+        props.getCategories(0,5);
         setName("");
         setDescription("");
         setFile("");
