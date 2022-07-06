@@ -173,7 +173,7 @@ function Role(){
                   <td colSpan={5} className="text-center">
                   {spinner ? (
                       <>
-                      <SmallSpinner />
+                      <SmallSpinner color="#0000FF" size={30} />
                       <br></br>Loading Data...
                       </>
                   ) : (

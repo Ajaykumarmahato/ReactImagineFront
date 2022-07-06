@@ -25,10 +25,10 @@ function Category(){
   const [spinner,setSpinner]=useState(true);
   const [submitSpinner,setSubmitSpinner]=useState(false);
   const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
-  const [itemPerPage,setItemPerPage]=useState(5);
-  const [currentPage,setCurrentPage]=useState(1);
-  const [totalCategory,setTotalCategory]=useState(null);
-  const [totalPage,setTotalPage]=useState(null);
+  // const [itemPerPage,setItemPerPage]=useState(5);
+  // const [currentPage,setCurrentPage]=useState(1);
+  // const [totalCategory,setTotalCategory]=useState(null);
+  // const [totalPage,setTotalPage]=useState(null);
 
   
 
@@ -52,15 +52,9 @@ function Category(){
 
   const getCategories=()=>{
     setSpinner(true);
-    let data={
-      currentPage:currentPage,
-      itemPerPage:itemPerPage
-    }
-    axiosPost(URL.categories,data,(response)=>{
+    axiosGet(URL.categories,(response)=>{
       if(response.data.success){
-        setTotalCategory(response.data.data.total);
-        setCategories(response.data.data.categories);
-        setTotalPage(Math.ceil(response.data.data.total/itemPerPage));
+        setCategories(response.data.data.items);
         setSpinner(false);
       }
     },(error)=>{
@@ -124,16 +118,16 @@ function Category(){
 }
 
 
-  const handleNext=()=>{
-    let current=currentPage+1;
-    setCurrentPage(current);
-    getCategories();
-  }
-  const handlePrevious=()=>{
-    let current=currentPage-1;
-    setCurrentPage(current);
-    getCategories();
-  }
+  // const handleNext=()=>{
+  //   let current=currentPage+1;
+  //   setCurrentPage(current);
+  //   getCategories();
+  // }
+  // const handlePrevious=()=>{
+  //   let current=currentPage-1;
+  //   setCurrentPage(current);
+  //   getCategories();
+  // }
 
     return (
       <>
@@ -204,7 +198,7 @@ function Category(){
                   <td colSpan={5} className="text-center">
                   {spinner ? (
                       <>
-                      <SmallSpinner />
+                      <SmallSpinner color="#0000FF" size={30}/>
                       <br></br>Loading Data...
                       </>
                   ) : (
@@ -213,11 +207,11 @@ function Category(){
                   </td>
                 </tr>)}
 
-                <tr>
+                {/* <tr>
                   <td colSpan={5} className="text-center">
                     <Pagination totalPage={totalPage} handlePrevious={handlePrevious} handleNext={handleNext} currentPage={currentPage} itemPerPage={itemPerPage} total={totalCategory}/>
                   </td>
-                </tr>
+                </tr> */}
               
             </tbody>
           </table>

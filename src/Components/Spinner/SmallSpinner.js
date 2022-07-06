@@ -1,9 +1,9 @@
-import { SpinnerCircularSplit } from 'spinners-react';
+import { SpinnerCircular } from 'spinners-react';
 
 
-function SmallSpinner(){
+function SmallSpinner(props){
     return(
-        <SpinnerCircularSplit size={30} enabled={true} />
+        <SpinnerCircular color={props.color} size={props.size} enabled={true} />
     );
 }
 

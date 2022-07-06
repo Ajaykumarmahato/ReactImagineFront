@@ -13,10 +13,12 @@ import swal from "sweetalert";
 import { axiosGet } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import checkPermission from "../../Utils/PermissionChecker";
+import SmallSpinner from "../Spinner/SmallSpinner";
 
 function SideBar() {
   const [sideBarOpen,setSideBarOpen]=useState(false);
   const [modules,setModules]=useState([]);
+  const [spinner,setSpinner]=useState(true);
 
   let navigate = useNavigate();
 
@@ -58,6 +60,7 @@ function SideBar() {
         System
       </SidebarHeader>
           <SidebarContent>
+
             <Menu iconShape="square">
               {modules.length>0?(
               modules.map((module, idx)=>{
@@ -87,12 +90,20 @@ function SideBar() {
                   )
                 )
               })
-              ):null}
+              ):( <div className="text-center mt-2">
+               {spinner ? (
+                      <>
+                      <SmallSpinner color="#FFFFFF" size={20} />
+                     
+                      </>
+                  ) : (
+                    'No Modules'
+                    )}</div>)}
               <MenuItem onClick={logout}>Logout
                                 
                       </MenuItem>
               
-            </Menu>  
+            </Menu>
           </SidebarContent>
           {/* <SidebarFooter onClick={logout}>Logout</SidebarFooter> */}
         </ProSidebar>
