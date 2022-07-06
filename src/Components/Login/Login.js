@@ -36,6 +36,7 @@ function Login() {
             localStorage.setItem("isLoggedIn", true);
             navigate('/dashboard');
              setSubmitSpinner(true);
+             window.location.reload(false);
           }
       },
       (err) => {

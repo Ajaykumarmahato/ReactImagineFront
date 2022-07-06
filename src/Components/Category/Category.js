@@ -15,6 +15,7 @@ import SearchCategory from "./SearchCategory";
 import Pagination from "../Pagination/Pagination";
 
 
+
 function Category(){
 
   const [addCategoryModalOpen,setAddCategoryModalOpen]=useState(false);
@@ -25,6 +26,8 @@ function Category(){
   const [spinner,setSpinner]=useState(true);
   const [submitSpinner,setSubmitSpinner]=useState(false);
   const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
+  const [filePreviewModalOpen,setFilePreviewModalOpen]=useState(false);
+  const [previewedFile,setPreviewedFile]=useState(null);
   // const [itemPerPage,setItemPerPage]=useState(5);
   // const [currentPage,setCurrentPage]=useState(1);
   // const [totalCategory,setTotalCategory]=useState(null);
@@ -48,6 +51,10 @@ function Category(){
   };
   const toggleSearchCategory = () => {
     setSearchCategoryModalOpen(!searchCategoryModalOpen);
+  };
+  const toggleFilePreview = (fileUrl) => {
+    setPreviewedFile(fileUrl);
+    setFilePreviewModalOpen(!filePreviewModalOpen);
   };
 
   const getCategories=()=>{
@@ -175,7 +182,7 @@ function Category(){
                       <th>{idx + 1}</th>
                       <td>{category.media.length>0?(
                         <>
-                       <img className="img-fluid image" src={fileUrl+'/'+category.media[0].id+'/'+category.media[0].file_name}/>
+                       <img className="img-fluid image" src={fileUrl+'/'+category.media[0].id+'/'+category.media[0].file_name} onClick={()=>toggleFilePreview(fileUrl+'/'+category.media[0].id+'/'+category.media[0].file_name)}/>
                        </>
                       ):<>-</>}</td>
                       <td>{category.name}</td>
@@ -185,7 +192,7 @@ function Category(){
                           <TbListDetails title="view" className="detail-icon"  onClick={()=>toggleDetailCategory(category)}/>
                         ):null}
                         {checkPermission('delete','Category')?(
-                          <RiDeleteBin7Line title="delete" className="delete-icon" onClick={()=>deleteCategory(category.id)} />
+                          <RiDeleteBin7Line title="delete" className="cursor-pointer delete-icon" onClick={()=>deleteCategory(category.id)} />
                           ):null}
                         
                         
@@ -261,6 +268,20 @@ function Category(){
           }
         />
         {/* category search modal end */}
+        {/* category file preview start */}
+        <WindowModal
+          size={'lg'}
+          titleModal="File Viewer"
+          openModal={filePreviewModalOpen}
+          toggleModal={()=>toggleFilePreview()}
+          footerModal={null}
+          bodyModal={
+            <>
+               
+            </>
+          }
+        />
+        {/* category file preview end */}
       </>
     );
 }
