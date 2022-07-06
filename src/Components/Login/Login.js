@@ -35,12 +35,12 @@ function Login() {
             localStorage.setItem("role", response.data.data.roles);
             localStorage.setItem("isLoggedIn", true);
             navigate('/dashboard');
-             setSubmitSpinner(true);
+             setSubmitSpinner(false);
              window.location.reload(false);
           }
       },
       (err) => {
-            setSubmitSpinner(true);
+            setSubmitSpinner(false);
             swal('Error',err.response.data.message,
             'error');
       }

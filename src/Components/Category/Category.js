@@ -161,7 +161,7 @@ function Category(){
          </div>
          <div className="tableContainerDiv" >
 
-          <table className="table">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th>#</th>
@@ -172,7 +172,7 @@ function Category(){
               </tr>
                 
             </thead>
-            <tbody >
+            <tbody  >
                {categories.length>0?(
                 categories.map((category, idx) => {
                   return (

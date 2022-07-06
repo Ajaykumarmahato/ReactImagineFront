@@ -135,7 +135,7 @@ function Role(){
          ):null}
          </div>
            <div className="tableContainerDiv" >
-          <table className="table">
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th>#</th>
