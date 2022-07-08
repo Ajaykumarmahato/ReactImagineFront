@@ -13,8 +13,8 @@ import checkPermission from "../../Utils/PermissionChecker";
 import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 import SearchCategory from "./SearchCategory";
 import Pagination from "../Pagination/Pagination";
+import PreviewFile from "../PreviewFile/PreviewFile";
 
-import FileViewer from 'react-file-viewer';
 
 
 
@@ -30,8 +30,7 @@ function Category(){
   const [submitSpinner,setSubmitSpinner]=useState(false);
   const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
   const [filePreviewModalOpen,setFilePreviewModalOpen]=useState(false);
-  const [previewedFilePath,setPreviewedFilePath]=useState(null);
-  const [previewedFileExtension,setPreviewedFileExtension]=useState(null);
+  const [media,setMedia]=useState(false);
   // const [itemPerPage,setItemPerPage]=useState(5);
   // const [currentPage,setCurrentPage]=useState(1);
   // const [totalCategory,setTotalCategory]=useState(null);
@@ -56,13 +55,8 @@ function Category(){
   const toggleSearchCategory = () => {
     setSearchCategoryModalOpen(!searchCategoryModalOpen);
   };
-  const toggleFilePreview = (fileUrl) => {
-    debugger;
-    if(fileUrl!=null&&fileUrl!=""&&fileUrl!==undefined){
-      const extension = fileUrl.split('.').pop();
-      setPreviewedFileExtension(extension);
-    }
-    setPreviewedFilePath(fileUrl);
+  const toggleFilePreview = (media) => {
+    setMedia(media);
     setFilePreviewModalOpen(!filePreviewModalOpen);
   };
 
@@ -133,9 +127,7 @@ function Category(){
     })
 }
 
-const onError=()=>{
-  console.log('sdsf')
-}
+
 
 
   // const handleNext=()=>{
@@ -195,7 +187,7 @@ const onError=()=>{
                       <th>{idx + 1}</th>
                       <td>{category.media.length>0?(
                         <>
-                       <img className="img-fluid image" src={fileUrl+'/'+category.media[0].id+'/'+category.media[0].file_name} onClick={()=>toggleFilePreview(fileUrl+'/'+category.media[0].id+'/'+category.media[0].file_name)}/>
+                       <img className="img-fluid image" src={fileUrl+'/'+category.media[0].id+'/'+category.media[0].file_name} onClick={()=>toggleFilePreview(category.media)}/>
                        </>
                       ):<>-</>}</td>
                       <td>{category.name}</td>
@@ -283,19 +275,14 @@ const onError=()=>{
         {/* category search modal end */}
         {/* category file preview start */}
         <WindowModal
-          size={'lg'}
+          size={'xl'}
           titleModal="File Viewer"
           openModal={filePreviewModalOpen}
           toggleModal={()=>toggleFilePreview()}
           footerModal={null}
           bodyModal={
             <>
-              <FileViewer
-                fileType={previewedFileExtension}
-                filePath={previewedFilePath}
-                errorComponent={null}
-                onError={onError}
-              />
+             <PreviewFile media={media}/>
             </>
           }
         />

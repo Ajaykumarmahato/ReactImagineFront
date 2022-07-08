@@ -119,3 +119,7 @@
 
 /* pro sidebar end */
 
+.filePreviewDiv{
+  max-height: 500px;
+  overflow-x: auto;
+}
