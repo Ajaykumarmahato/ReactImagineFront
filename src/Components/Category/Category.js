@@ -14,6 +14,9 @@ import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 import SearchCategory from "./SearchCategory";
 import Pagination from "../Pagination/Pagination";
 
+import FileViewer from 'react-file-viewer';
+
+
 
 
 function Category(){
@@ -27,7 +30,8 @@ function Category(){
   const [submitSpinner,setSubmitSpinner]=useState(false);
   const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
   const [filePreviewModalOpen,setFilePreviewModalOpen]=useState(false);
-  const [previewedFile,setPreviewedFile]=useState(null);
+  const [previewedFilePath,setPreviewedFilePath]=useState(null);
+  const [previewedFileExtension,setPreviewedFileExtension]=useState(null);
   // const [itemPerPage,setItemPerPage]=useState(5);
   // const [currentPage,setCurrentPage]=useState(1);
   // const [totalCategory,setTotalCategory]=useState(null);
@@ -53,7 +57,12 @@ function Category(){
     setSearchCategoryModalOpen(!searchCategoryModalOpen);
   };
   const toggleFilePreview = (fileUrl) => {
-    setPreviewedFile(fileUrl);
+    debugger;
+    if(fileUrl!=null&&fileUrl!=""&&fileUrl!==undefined){
+      const extension = fileUrl.split('.').pop();
+      setPreviewedFileExtension(extension);
+    }
+    setPreviewedFilePath(fileUrl);
     setFilePreviewModalOpen(!filePreviewModalOpen);
   };
 
@@ -122,6 +131,10 @@ function Category(){
       setSearchSubmitSpinner(false);
       swal('Error',error.response.data.message,'error');
     })
+}
+
+const onError=()=>{
+  console.log('sdsf')
 }
 
 
@@ -277,7 +290,12 @@ function Category(){
           footerModal={null}
           bodyModal={
             <>
-               
+              <FileViewer
+                fileType={previewedFileExtension}
+                filePath={previewedFilePath}
+                errorComponent={null}
+                onError={onError}
+              />
             </>
           }
         />
