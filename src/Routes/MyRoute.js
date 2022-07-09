@@ -7,6 +7,7 @@ import Category from "../Components/Category/Category";
 import Signup from "../Components/Signup/Signup";
 import PrivateRoute from '../Routes/PrivateRoute';
 import Role from '../Components/Role/Role';
+import NominalAccount from '../Components/NominalAccount/NominalAccount';
 function MyRoute(){
    
         return (
@@ -32,6 +33,12 @@ function MyRoute(){
               path="/role"
               element={<PrivateRoute>
                 <Role/>
+              </PrivateRoute>}
+            />
+            <Route
+              path="/nominal-account"
+              element={<PrivateRoute>
+                <NominalAccount/>
               </PrivateRoute>}
             />
             <Route path="*" element={<>nothin found</>} />
