@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -9,10 +9,11 @@ import {
   Label,
 } from "reactstrap";
 import DatePicker from "react-datepicker";
-import { axiosPost } from "../../Utils/AxiosApi";
+import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
 import { URL } from "../../Utils/Constant";
 import swal from "sweetalert";
 import moment from "moment";
+import Select from 'react-select';
 
 function NominalAccountForm(props){
 
@@ -20,19 +21,51 @@ function NominalAccountForm(props){
     const [description,setDescription]=useState("");
     const [amount,setAmount]=useState("");
     const [date, setDate] = useState(new Date());
+    const [categoryId, setCategoryId] = useState("");
+    const [categoryOptions, setCategoryOptions] = useState([]);
 
+
+
+
+    useEffect(()=>{
+      getCategories();
+    },[])
+
+    const getCategories=()=>{
+    axiosGet(URL.categories,(response)=>{
+      if(response.data.success){
+       if(response.data.data.items.length>0){
+        let options=[];
+        debugger;
+        response.data.data.items.forEach((item)=>{
+          options.push({
+            label:item.name,
+            value:item.id,
+          })
+        });
+        setCategoryOptions(options);
+       }
+      }
+    },(error)=>{
+
+    })
+  }
+
+    const selectCategory=(e)=>{
+      setCategoryId(e.value);
+    }
     const insertNominalAccount=(e)=>{
        
-        debugger;
         let data={
             title,
             description,
             amount,
+            categoryId,
             date:moment(date).format("YYYY-MM-DD"),
             isIncome:props.isIncome
         }
         debugger;
-       axiosPost(URL.nominalAccounts,data,(response)=>{
+       axiosPost(URL.insertNominalAccounts,data,(response)=>{
             if(response.data.success){
                 swal('Success',response.data.message,'success');
             }
@@ -84,6 +117,22 @@ function NominalAccountForm(props){
           </Col>
         </FormGroup>
 
+        <FormGroup row>
+          <Label for="exampleText" sm={2}>
+            Category
+          </Label>
+          <Col sm={10}>
+           <Select
+            className="basic-single"
+            classNamePrefix="select"
+            isClearable={true}
+            isSearchable={true}
+            name={categoryId}
+            options={categoryOptions}
+            onChange={(e)=>selectCategory(e)}
+          />
+          </Col>
+        </FormGroup>
         <FormGroup row>
           <Label for="exampleText" sm={2}>
             Description

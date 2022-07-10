@@ -1,21 +1,52 @@
-import React, { useState } from "react";
-import { RiAddCircleLine} from "react-icons/ri";
-import { BiSearchAlt} from "react-icons/bi";
+import React, { useEffect, useState } from "react";
 import checkPermission from "../../Utils/PermissionChecker";
 import WindowModal from "../WindowModal/WindowModal";
 import NominalAccountForm from "./NominalAccountForm";
+import { axiosPost } from "../../Utils/AxiosApi";
+import { URL } from "../../Utils/Constant";
+import SmallSpinner from "../Spinner/SmallSpinner";
+import { RiDeleteBin7Line,RiAddCircleLine} from "react-icons/ri";
+import { BiSearchAlt} from "react-icons/bi";
+import { TbListDetails} from "react-icons/tb";
+
+
 function NominalAccount(){
 
     const [isIncome,setIsIncome]=useState(true);
     const [addNominalAccountModalOpen,setAddNominalAccountModalOpen]=useState(false);
+    const [nominalAccounts,setNominalAccounts]=useState([]);
+    const [spinner,setSpinner]=useState(true);
 
+    useEffect(()=>{
+      getNominalAccounts();
+    },[])
 
     const toggleAddNominalAccount=()=>{
         setAddNominalAccountModalOpen(!addNominalAccountModalOpen);
     }
 
     const toggleAccount=(isIncome)=>{
-        setIsIncome(isIncome);
+         setIsIncome(isIncome);
+        getNominalAccounts();
+    }
+
+    const getNominalAccounts=()=>{
+      setSpinner(true);
+      const data={
+        isIncome:isIncome
+      }
+
+      axiosPost(URL.nominalAccounts,data,(response)=>{
+      setSpinner(false);
+
+          if(response.data.success){
+
+            setNominalAccounts(response.data.data.items);
+          }
+      },(error)=>{
+      setSpinner(false);
+
+      })
     }
 
     return (
@@ -56,13 +87,48 @@ function NominalAccount(){
                 <th>Amount</th>
                 <th>Category</th>
                 <th>Description</th>
+                <th>Date</th>
                 <th>Action</th>
               </tr>
                 
             </thead>
-            <tbody  >
-             
-              
+            <tbody>
+             {nominalAccounts.length>0?(
+                nominalAccounts.map((nominalAccount, idx) => {
+                  return (
+                    <>
+                  <tr>
+                     
+                      <th>{idx + 1}</th>
+                      <td>{nominalAccount.title}</td>
+                      <td>{nominalAccount.amount}</td>
+                      <td>{nominalAccount.category.name}</td>
+                      <td>{nominalAccount.description}</td>
+                      <td>{nominalAccount.date}</td>
+                      <td >
+                        {checkPermission('details','Nominal Account')?(
+                          <TbListDetails title="view" className="detail-icon"  />
+                        ):null}
+                        {checkPermission('delete','Nominal Account')?(
+                          <RiDeleteBin7Line title="delete" className="cursor-pointer delete-icon"  />
+                          ):null}
+                      </td>
+                    </tr>
+                  </>
+                );
+              })
+              ):(<tr>
+                  <td colSpan={7} className="text-center">
+                  {spinner ? (
+                      <>
+                      <SmallSpinner color="#0000FF" size={30}/>
+                      <br></br>Loading Data...
+                      </>
+                  ) : (
+                    'No Data'
+                    )}
+                  </td>
+                </tr>)}
             </tbody>
           </table>
         </div>

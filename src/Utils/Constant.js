@@ -35,6 +35,7 @@ export const URL = {
     moduleRolePermissions:`${serverLocation}/auth/permissions/module-role-permission`,
 
     // nominal-accounts
+    insertNominalAccounts:`${serverLocation}/auth/nominal-accounts/store`,
     nominalAccounts:`${serverLocation}/auth/nominal-accounts`,
    
 };
