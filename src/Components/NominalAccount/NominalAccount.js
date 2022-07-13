@@ -19,16 +19,12 @@ function NominalAccount(){
 
     useEffect(()=>{
       getNominalAccounts();
-    },[])
+    },[isIncome])
 
     const toggleAddNominalAccount=()=>{
         setAddNominalAccountModalOpen(!addNominalAccountModalOpen);
     }
 
-    const toggleAccount=(isIncome)=>{
-         setIsIncome(isIncome);
-        getNominalAccounts();
-    }
 
     const getNominalAccounts=()=>{
       setSpinner(true);
@@ -53,10 +49,10 @@ function NominalAccount(){
         <>
           <div className="landing">
             <div className="d-flex border">
-                <div onClick={(e)=>toggleAccount(true)} className={`${isIncome?"col-6 p-2 text-center border bg-info":"col-6 p-2 text-center border"}`}>
+                <div onClick={(e)=>setIsIncome(true)} className={`${isIncome?"col-6 p-2 text-center border bg-info":"col-6 p-2 text-center border"}`}>
                     <h5>Income</h5>
                 </div>
-                <div onClick={(e)=>toggleAccount(false)} className={`${!isIncome?"col-6 p-2 text-center border bg-info":"col-6 p-2 text-center border"}`}>
+                <div onClick={(e)=>setIsIncome(false)} className={`${!isIncome?"col-6 p-2 text-center border bg-info":"col-6 p-2 text-center border"}`}>
                     <h5>Expenditure</h5>
                 </div>
             </div>

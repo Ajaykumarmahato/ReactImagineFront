@@ -56,7 +56,7 @@ function SideBar() {
     return (
       <div className="sidebar">
         <ProSidebar collapsed={sideBarOpen} className="proSidebar">
-        <SidebarHeader onClick={toggleSidebar}>
+        <SidebarHeader className="text-center" onClick={toggleSidebar}>
         System
       </SidebarHeader>
           <SidebarContent>
