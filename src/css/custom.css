@@ -113,8 +113,10 @@
 
 /* pro sidebar start */
 
-.proSidebar{
-  background-color: #007788 !important;
+
+.proSidebarContent{
+  background-color:teal !important;
+  color: white;
 }
 
 /* pro sidebar end */

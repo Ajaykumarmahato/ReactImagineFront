@@ -55,11 +55,11 @@ function SideBar() {
 
     return (
       <div className="sidebar">
-        <ProSidebar collapsed={sideBarOpen} className="proSidebar">
-        <SidebarHeader className="text-center" onClick={toggleSidebar}>
-        System
+        <ProSidebar collapsed={sideBarOpen}>
+        <SidebarHeader className="text-center text-light" onClick={toggleSidebar}>
+        Nominal System
       </SidebarHeader>
-          <SidebarContent>
+          <SidebarContent className="proSidebarContent">
 
             <Menu iconShape="square">
               {modules.length>0?(
