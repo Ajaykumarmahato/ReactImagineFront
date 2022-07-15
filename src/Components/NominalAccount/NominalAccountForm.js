@@ -23,6 +23,7 @@ function NominalAccountForm(props){
     const [date, setDate] = useState(new Date());
     const [categoryId, setCategoryId] = useState("");
     const [categoryOptions, setCategoryOptions] = useState([]);
+    const [files, setFiles] = useState(null);
 
 
 
@@ -51,11 +52,18 @@ function NominalAccountForm(props){
     })
   }
 
+  const handleFileChange=(e)=>{
+    debugger;
+    setFiles([...e.target.files]);
+  } 
+
+
     const selectCategory=(e)=>{
       setCategoryId(e.value);
     }
     const insertNominalAccount=(e)=>{
-       
+       var formData=new FormData();
+
         let data={
             title,
             description,
@@ -64,10 +72,18 @@ function NominalAccountForm(props){
             date:moment(date).format("YYYY-MM-DD"),
             isIncome:props.isIncome
         }
+        formData.append('data',JSON.stringify(data));
         debugger;
-       axiosPost(URL.insertNominalAccounts,data,(response)=>{
+        if(files!=null && files.length>0){
+         files.forEach((file)=>{
+          formData.append('files[]',file);
+         });
+        }
+       axiosPost(URL.insertNominalAccounts,formData,(response)=>{
             if(response.data.success){
-                swal('Success',response.data.message,'success');
+              props.toggleAddNominalAccount();
+              swal('Success',response.data.message,'success');
+              props.getNominalAccounts();
             }
        },(error)=>{
         swal("Error",error.response.data.message,'error');
@@ -131,6 +147,14 @@ function NominalAccountForm(props){
             options={categoryOptions}
             onChange={(e)=>selectCategory(e)}
           />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Label for="exampleText" sm={2}>
+            Files
+          </Label>
+          <Col sm={10}>
+            <Input type="file" name="file" onChange={(e)=>handleFileChange(e)} id="exampleFile" multiple />
           </Col>
         </FormGroup>
         <FormGroup row>

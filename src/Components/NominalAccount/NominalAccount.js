@@ -3,11 +3,12 @@ import checkPermission from "../../Utils/PermissionChecker";
 import WindowModal from "../WindowModal/WindowModal";
 import NominalAccountForm from "./NominalAccountForm";
 import { axiosPost } from "../../Utils/AxiosApi";
-import { URL } from "../../Utils/Constant";
+import { fileUrl, URL } from "../../Utils/Constant";
 import SmallSpinner from "../Spinner/SmallSpinner";
 import { RiDeleteBin7Line,RiAddCircleLine} from "react-icons/ri";
 import { BiSearchAlt} from "react-icons/bi";
 import { TbListDetails} from "react-icons/tb";
+import PreviewFile from "../PreviewFile/PreviewFile";
 
 
 function NominalAccount(){
@@ -16,6 +17,8 @@ function NominalAccount(){
     const [addNominalAccountModalOpen,setAddNominalAccountModalOpen]=useState(false);
     const [nominalAccounts,setNominalAccounts]=useState([]);
     const [spinner,setSpinner]=useState(true);
+    const [media,setMedia]=useState([]);
+    const [filePreviewModalOpen,setFilePreviewModalOpen]=useState(false);
 
     useEffect(()=>{
       getNominalAccounts();
@@ -25,6 +28,10 @@ function NominalAccount(){
         setAddNominalAccountModalOpen(!addNominalAccountModalOpen);
     }
 
+    const toggleFilePreview = (media) => {
+      setMedia(media);
+      setFilePreviewModalOpen(!filePreviewModalOpen);
+    };
 
     const getNominalAccounts=()=>{
       setSpinner(true);
@@ -80,6 +87,7 @@ function NominalAccount(){
               <tr>
                 <th>#</th>
                 <th>Title</th>
+                <th>File</th>
                 <th>Amount</th>
                 <th>Category</th>
                 <th>Description</th>
@@ -97,6 +105,11 @@ function NominalAccount(){
                      
                       <th>{idx + 1}</th>
                       <td>{nominalAccount.title}</td>
+                      <td>{nominalAccount.media.length>0?(
+                        <>
+                       <img className="img-fluid image" src={fileUrl+'/'+nominalAccount.media[0].id+'/'+nominalAccount.media[0].file_name} onClick={()=>toggleFilePreview(nominalAccount.media)}/>
+                       </>
+                      ):<>-</>}</td>
                       <td>{nominalAccount.amount}</td>
                       <td>{nominalAccount.category.name}</td>
                       <td>{nominalAccount.description}</td>
@@ -139,11 +152,25 @@ function NominalAccount(){
           footerModal={null}
           bodyModal={
             <>
-            <NominalAccountForm isIncome={isIncome}/>
+            <NominalAccountForm isIncome={isIncome} getNominalAccounts={getNominalAccounts} toggleAddNominalAccount={toggleAddNominalAccount}/>
             </>
           }
         />
         {/* add nominal account modal end */}
+         {/* nominal account file preview start */}
+         <WindowModal
+          size={'xl'}
+          titleModal="File Viewer"
+          openModal={filePreviewModalOpen}
+          toggleModal={()=>toggleFilePreview()}
+          footerModal={null}
+          bodyModal={
+            <>
+             <PreviewFile media={media}/>
+            </>
+          }
+        />
+        {/* nominal account file preview end */}
         </>
     );
 

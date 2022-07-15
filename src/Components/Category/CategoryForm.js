@@ -23,17 +23,6 @@ function CategoryForm(props) {
 
   const handleFileChange=(e)=>{
     setFile(e.target.files[0]);
-    // if(e.target.files[0]){
-    //    let reader = new FileReader();
-    //     reader.onload=function(e){
-    //         setFilePreviewSrc(e.target.result);
-    //     }
-    //     reader.readAsDataURL(e.target.files[0]); 
-    // }else{
-    //   setFile("");
-    //   filePreviewSrc("");
-    // }
-
   }
 
   const insertCategory=(e)=>{
