@@ -127,7 +127,7 @@ function NominalAccount(){
                 );
               })
               ):(<tr>
-                  <td colSpan={7} className="text-center">
+                  <td colSpan={8} className="text-center">
                   {spinner ? (
                       <>
                       <SmallSpinner color="#0000FF" size={30}/>
