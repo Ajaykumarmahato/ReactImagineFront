@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import WindowModal from "../WindowModal/WindowModal";
 import CategoryDetail from "./CategoryDetail";
 import CategoryForm from "./CategoryForm";
-import { fileUrl, URL } from "../../Utils/Constant";
+import { fileUrl, pagination, URL } from "../../Utils/Constant";
 import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
 import swal from "sweetalert";
 import { RiDeleteBin7Line,RiAddCircleLine} from "react-icons/ri";
@@ -14,6 +14,7 @@ import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 import SearchCategory from "./SearchCategory";
 import Pagination from "../Pagination/Pagination";
 import PreviewFile from "../PreviewFile/PreviewFile";
+import {useNavigate} from 'react-router-dom';
 
 
 
@@ -33,10 +34,10 @@ function Category(){
   const [media,setMedia]=useState(false);
   const [searchParam,setSearchParam]=useState("");
   const [pageNumber,setPageNumber]=useState(1);
+  const [totalPage,setTotalPage]=useState(null);
 
 
 
-  
 
 
 
@@ -69,7 +70,11 @@ function Category(){
     let url=searchParam==""?URL.categories:URL.searchCategory;
     axiosPost(url,data,(response)=>{
       if(response.data.success){
-        setCategories(response.data.data.items);
+        setTotalPage(Math.ceil(response.data.data.total/pagination));
+        setCategories(response.data.data.categories);
+        if(searchCategoryModalOpen){
+          toggleSearchCategory()
+        }
         setSpinner(false);
       }
     },(error)=>{
@@ -126,8 +131,8 @@ const handlePrevious=()=>{
 }
 
 const resetSearchForm=()=>{
-  setPageNumber(1);
   setSearchParam("");
+  setPageNumber(1);
 }
 
 
@@ -220,11 +225,13 @@ const resetSearchForm=()=>{
                   </td>
                 </tr>)}
 
-                <tr>
+                {categories.length>0?(
+                  <tr>
                   <td colSpan={5} className="text-center">
-                    <Pagination  handleNext={handleNext} handlePrevious={handlePrevious}/>
+                    <Pagination pageNumber={pageNumber} totalPage={totalPage}  handleNext={handleNext} handlePrevious={handlePrevious}/>
                   </td>
                 </tr>
+                ):null}
               
             </tbody>
           </table>

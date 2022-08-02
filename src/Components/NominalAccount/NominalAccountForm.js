@@ -33,7 +33,7 @@ function NominalAccountForm(props){
     },[])
 
     const getCategories=()=>{
-    axiosGet(URL.categories,(response)=>{
+    axiosGet(URL.getAllCategories,(response)=>{
       if(response.data.success){
        if(response.data.data.items.length>0){
         let options=[];

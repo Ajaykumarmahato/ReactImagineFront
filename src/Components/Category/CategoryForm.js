@@ -45,7 +45,7 @@ function CategoryForm(props) {
       setSubmitSpinner(false);
 
         props.toggleAddCategory();
-        props.getCategories(0,5);
+        props.getCategories();
         setName("");
         setDescription("");
         setFile("");

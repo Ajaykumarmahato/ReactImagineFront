@@ -3,7 +3,7 @@ export const serverLocation = "http://127.0.0.1:8001/api";
 
 export const fileUrl = "http://127.0.0.1:8001/storage";
 
-
+export const pagination=10;
 
 export const URL = {
     registerUser:`${serverLocation}/free/register-user`,
@@ -21,6 +21,7 @@ export const URL = {
     storeCategory:`${serverLocation}/auth/categories/store`,
     deleteCategory:`${serverLocation}/auth/categories/delete`,
     searchCategory:`${serverLocation}/auth/categories/search`,
+    getAllCategories:`${serverLocation}/auth/categories/get-all-categories`,
 
     // roles
     roles:`${serverLocation}/auth/roles`,
