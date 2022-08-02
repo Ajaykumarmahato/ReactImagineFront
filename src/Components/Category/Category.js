@@ -26,15 +26,15 @@ function Category(){
   const [searchCategoryModalOpen,setSearchCategoryModalOpen]=useState(false);
   const [categoryDetail,setCategoryDetail]=useState("");
   const [categories,setCategories]=useState([]);
-  const [spinner,setSpinner]=useState(true);
+  const [spinner,setSpinner]=useState(false);
   const [submitSpinner,setSubmitSpinner]=useState(false);
   const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
   const [filePreviewModalOpen,setFilePreviewModalOpen]=useState(false);
   const [media,setMedia]=useState(false);
-  // const [itemPerPage,setItemPerPage]=useState(5);
-  // const [currentPage,setCurrentPage]=useState(1);
-  // const [totalCategory,setTotalCategory]=useState(null);
-  // const [totalPage,setTotalPage]=useState(null);
+  const [searchParam,setSearchParam]=useState("");
+  const [pageNumber,setPageNumber]=useState(1);
+
+
 
   
 
@@ -42,7 +42,7 @@ function Category(){
 
   useEffect(()=>{
     getCategories();
-  },[])
+  },[pageNumber])
 
   const toggleAddCategory = () => {
     setAddCategoryModalOpen(!addCategoryModalOpen);
@@ -62,7 +62,12 @@ function Category(){
 
   const getCategories=()=>{
     setSpinner(true);
-    axiosGet(URL.categories,(response)=>{
+    const data={
+      pageNumber:pageNumber,
+      name:searchParam
+    }
+    let url=searchParam==""?URL.categories:URL.searchCategory;
+    axiosPost(url,data,(response)=>{
       if(response.data.success){
         setCategories(response.data.data.items);
         setSpinner(false);
@@ -109,37 +114,26 @@ function Category(){
   };
 
 
-  const searchCategory=(name)=>{
-    setSearchSubmitSpinner(true);
-    let data={
-        name:name
-    }
-    axiosPost(URL.searchCategory,data,(response)=>{
-      if(response.data.success){
-        setSearchSubmitSpinner(false);
-        toggleSearchCategory();
-        setCategories(response.data.data.items);
-      }
 
-    },(error)=>{
-      setSearchSubmitSpinner(false);
-      swal('Error',error.response.data.message,'error');
-    })
+
+
+const handleNext=()=>{
+  setPageNumber(pageNumber+1);
+
+}
+const handlePrevious=()=>{
+  setPageNumber(pageNumber-1);
+}
+
+const resetSearchForm=()=>{
+  setPageNumber(1);
+  setSearchParam("");
 }
 
 
 
 
-  // const handleNext=()=>{
-  //   let current=currentPage+1;
-  //   setCurrentPage(current);
-  //   getCategories();
-  // }
-  // const handlePrevious=()=>{
-  //   let current=currentPage-1;
-  //   setCurrentPage(current);
-  //   getCategories();
-  // }
+  
 
     return (
       <>
@@ -156,12 +150,19 @@ function Category(){
           </button>
          ):null}
          {checkPermission('search','Category')?(
+           <>
            <button
             className="btn btn-warning m-4 text-light"
             onClick={toggleSearchCategory}
           >
             Search <BiSearchAlt title="Search" className="search-icon"/>
           </button>
+           <button
+            className="btn btn-danger m-4 text-light"
+            onClick={resetSearchForm}
+          >
+            Reset <BiSearchAlt title="Search" className="search-icon"/>
+          </button></>
          ):null}
          </div>
          <div className="tableContainerDiv" >
@@ -219,11 +220,11 @@ function Category(){
                   </td>
                 </tr>)}
 
-                {/* <tr>
+                <tr>
                   <td colSpan={5} className="text-center">
-                    <Pagination totalPage={totalPage} handlePrevious={handlePrevious} handleNext={handleNext} currentPage={currentPage} itemPerPage={itemPerPage} total={totalCategory}/>
+                    <Pagination  handleNext={handleNext} handlePrevious={handlePrevious}/>
                   </td>
-                </tr> */}
+                </tr>
               
             </tbody>
           </table>
@@ -268,7 +269,7 @@ function Category(){
           footerModal={null}
           bodyModal={
             <>
-              <SearchCategory searchCategory={searchCategory} />
+              <SearchCategory getCategories={getCategories} setSearchParam={setSearchParam} searchParam={searchParam}  />
             </>
           }
         />

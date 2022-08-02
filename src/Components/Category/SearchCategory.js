@@ -4,14 +4,12 @@ import {
     Col,
     Form,
     FormGroup,
-    FormText,
     Input,
     Label,
   } from "reactstrap";
 
 function SearchCategory(props){
 
-    const [name,setName]=useState("");
 
 
     
@@ -25,17 +23,17 @@ function SearchCategory(props){
              <Col sm={10}>
                <Input
                  type="text"
-                 name="name"
+                 name="searchParam"
                  id="exampleEmail"
-                 value={name}
-                 onChange={(e)=>setName(e.target.value)}
+                 value={props.searchParam}
+                 onChange={(e)=>props.setSearchParam(e.target.value)}
                  placeholder="Category Name"
                />
              </Col>
            </FormGroup>
            <FormGroup>
              <Col className="d-flex justify-content-end">
-               <Button onClick={(e)=>props.searchCategory(name)} className="btn btn-success">Search</Button>
+               <Button onClick={(e)=>props.getCategories(props.setSearchParam)} className="btn btn-success">Search</Button>
              </Col>
            </FormGroup>
          </Form>
