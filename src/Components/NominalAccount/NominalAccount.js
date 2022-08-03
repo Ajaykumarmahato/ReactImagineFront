@@ -38,7 +38,6 @@ function NominalAccount(){
       const data={
         isIncome:isIncome
       }
-
       axiosPost(URL.nominalAccounts,data,(response)=>{
       setSpinner(false);
 

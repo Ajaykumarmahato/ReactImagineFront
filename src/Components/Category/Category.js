@@ -14,7 +14,7 @@ import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 import SearchCategory from "./SearchCategory";
 import Pagination from "../Pagination/Pagination";
 import PreviewFile from "../PreviewFile/PreviewFile";
-import {useNavigate} from 'react-router-dom';
+
 
 
 
@@ -29,7 +29,6 @@ function Category(){
   const [categories,setCategories]=useState([]);
   const [spinner,setSpinner]=useState(false);
   const [submitSpinner,setSubmitSpinner]=useState(false);
-  const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
   const [filePreviewModalOpen,setFilePreviewModalOpen]=useState(false);
   const [media,setMedia]=useState(false);
   const [searchParam,setSearchParam]=useState("");
@@ -67,7 +66,7 @@ function Category(){
       pageNumber:pageNumber,
       name:searchParam
     }
-    let url=searchParam==""?URL.categories:URL.searchCategory;
+    let url=searchParam===""?URL.categories:URL.searchCategory;
     axiosPost(url,data,(response)=>{
       if(response.data.success){
         setTotalPage(Math.ceil(response.data.data.total/pagination));
@@ -143,7 +142,7 @@ const resetSearchForm=()=>{
     return (
       <>
       <FullWindowSpinner text="Please Wait. Deleting..." display={submitSpinner} />
-      <FullWindowSpinner text="Please Wait. Searching..." display={searchSubmitSpinner} />
+
         <div className="landing">
          <div className="d-flex justify-content-between">
          {checkPermission('create','Category')?(

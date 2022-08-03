@@ -10,8 +10,6 @@ import {
 
 function SearchCategory(props){
 
-
-
     
     return (
         <>
@@ -33,7 +31,7 @@ function SearchCategory(props){
            </FormGroup>
            <FormGroup>
              <Col className="d-flex justify-content-end">
-               <Button onClick={(e)=>props.getCategories(props.setSearchParam)} className="btn btn-success">Search</Button>
+               <Button onClick={(e)=>props.getCategories()} className="btn btn-success">Search</Button>
              </Col>
            </FormGroup>
          </Form>

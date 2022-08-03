@@ -56,7 +56,7 @@ function RoleForm(props){
             name:name,
             permissions:permissions
         }
-        axiosPost(URL.roles,data,(response)=>{
+        axiosPost(URL.storeRole,data,(response)=>{
             if(response.data.success){
               setSubmitSpinner(false);
                 props.getRoles();

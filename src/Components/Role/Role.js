@@ -3,7 +3,7 @@ import { RiDeleteBin7Line,RiAddCircleLine,RiEditBoxLine} from "react-icons/ri";
 import { BiSearchAlt} from "react-icons/bi";
 import swal from "sweetalert";
 import { axiosGet, axiosPost } from "../../Utils/AxiosApi";
-import { URL } from "../../Utils/Constant";
+import { pagination, URL } from "../../Utils/Constant";
 import checkPermission from "../../Utils/PermissionChecker";
 import FullWindowSpinner from "../Spinner/FullWindowSpinner";
 import SmallSpinner from "../Spinner/SmallSpinner";
@@ -11,6 +11,7 @@ import WindowModal from "../WindowModal/WindowModal";
 import EditRolePermissionForm from "./EditRolePermissionForm";
 import RoleForm from "./RoleForm";
 import SearchRole from "./SearchRole";
+import Pagination from "../Pagination/Pagination";
 
 function Role(){
 
@@ -21,14 +22,16 @@ function Role(){
     const [editRolePermissionModalOpen, setEditRolePermissionModalOpen]=useState(false);
     const [roleId, setRoleId]=useState("");
     const [submitSpinner, setSubmitSpinner]=useState(false);
-      const [searchRoleModalOpen,setSearchRoleModalOpen]=useState(false);
-  const [searchSubmitSpinner,setSearchSubmitSpinner]=useState(false);
+    const [searchRoleModalOpen,setSearchRoleModalOpen]=useState(false);
+  const [pageNumber,setPageNumber]=useState(1);
+  const [totalPage,setTotalPage]=useState(null);
+  const [searchParam,setSearchParam]=useState("");
 
 
 
     useEffect(()=>{
         getRoles();
-    },[])
+    },[pageNumber])
 
   const toggleSearchRole = () => {
       setSearchRoleModalOpen(!searchRoleModalOpen);
@@ -45,9 +48,19 @@ function Role(){
     }
 
     const getRoles=()=>{
-        axiosGet(URL.roles,(response)=>{
+      const data={
+        pageNumber:pageNumber,
+        name:searchParam
+      }
+      let url=searchParam===""?URL.roles:URL.searchRole;
+        axiosPost(url,data,(response)=>{
+          debugger;
             if(response.data.success){
-                setRoles(response.data.data.items);
+                setTotalPage(Math.ceil(response.data.data.total/pagination));
+                setRoles(response.data.data.roles);
+                if(searchRoleModalOpen){
+                  toggleSearchRole()
+                }
                 setSpinner(false);
             }
         },(error)=>{
@@ -55,23 +68,7 @@ function Role(){
         })
     }
 
-    const searchRole=(name)=>{
-    setSearchSubmitSpinner(true);
-    let data={
-        name:name
-    }
-    axiosPost(URL.searchRole,data,(response)=>{
-      if(response.data.success){
-        setSearchSubmitSpinner(false);
-        toggleSearchRole();
-        setRoles(response.data.data.items);
-      }
-
-    },(error)=>{
-      setSearchSubmitSpinner(false);
-      swal('Error',error.response.data.message,'error');
-    })
-}
+    
 
     const deleteRole=(roleId)=>{
       swal({
@@ -109,10 +106,22 @@ function Role(){
           });
     }
 
+    const handleNext=()=>{
+      setPageNumber(pageNumber+1);
+    
+    }
+    const handlePrevious=()=>{
+      setPageNumber(pageNumber-1);
+    }
+
+    const resetSearchForm=()=>{
+      setSearchParam("");
+      setPageNumber(1);
+    }
+
     return (
 <>
 <FullWindowSpinner text="Please Wait. Deleting..." display={submitSpinner} />
-      <FullWindowSpinner text="Please Wait. Searching..." display={searchSubmitSpinner} />
 
  <div className="landing">
  <div className="d-flex justify-content-between">
@@ -124,14 +133,22 @@ function Role(){
             Add <RiAddCircleLine title="Add" className="add-icon"/>
           
           </button>
+          
          ):null}
           {checkPermission('search','Role')?(
+            <>
            <button
             className="btn btn-warning m-4 text-light"
             onClick={toggleSearchRole}
           >
             Search <BiSearchAlt title="Search" className="search-icon"/>
           </button>
+           <button
+           className="btn btn-danger m-4 text-light"
+           onClick={resetSearchForm}
+         >
+           Reset <BiSearchAlt title="Search" className="search-icon"/>
+         </button></>
          ):null}
          </div>
            <div className="tableContainerDiv" >
@@ -181,6 +198,13 @@ function Role(){
                   )}
                   </td>
                 </tr>)}
+                {roles.length>0?(
+                  <tr>
+                  <td colSpan={5} className="text-center">
+                    <Pagination pageNumber={pageNumber} totalPage={totalPage}  handleNext={handleNext} handlePrevious={handlePrevious}/>
+                  </td>
+                </tr>
+                ):null}
                  
                  {/* add role modal */}
                  <WindowModal
@@ -218,7 +242,7 @@ function Role(){
           footerModal={null}
           bodyModal={
             <>
-              <SearchRole searchRole={searchRole} />
+              <SearchRole getRoles={getRoles} searchParam={searchParam} setSearchParam={setSearchParam}/>
             </>
           }
         />
